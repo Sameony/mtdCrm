@@ -4,6 +4,7 @@ const cryptService = new CryptService()
 
 const userServices = {
     add_user_by_email : _add_user_by_email,
+    login_user_by_email : _login_user_by_email,
 }
 
 async function _add_user_by_email(email, pass){
@@ -18,6 +19,17 @@ async function _add_user_by_email(email, pass){
             console.log(err)
             reject(err)
         })
+    })
+}
+async function _login_user_by_email(email, pass){
+    let data = await User.find({user_email:email}).catch(err=>console.log(err))
+    let user = data[0]
+    return new Promise(async (resolve, reject)=>{
+        if(!user)
+            return reject("Invalid credentials.")
+        const match = await cryptService.verify(pass, user.password)
+        if(match)
+            return resolve(`Logged in. Welcome ${user.user_email}`)
     })
 }
 

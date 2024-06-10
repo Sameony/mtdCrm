@@ -12,6 +12,7 @@ var jsonParser = bodyParser.json()
 const loginController = new LoginController()
 
 router.post("/addUser", jsonParser, loginController.addUser)
+router.post("/loginUser", jsonParser, loginController.loginUser)
 
 
 router.post('/', customerController.addCustomer);

@@ -10,6 +10,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 app.set('port', process.env.port || 3000)
+app.use(cors())
 app.use("/",routes)
 app.use((req, res,next)=>{
   let err = new Error("Not Found");
