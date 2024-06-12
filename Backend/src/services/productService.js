@@ -1,30 +1,46 @@
-const Product = require('../config/models/ProductModel');
+const Product = require("../config/models/productModel");
 
 const productServices = {
-    addProduct: async (data) => {
-        try {
-            const newProduct = await Product.create(data);
-            return newProduct;
-        } catch (error) {
-            throw error;
-        }
-    },
-    getProductById: async (id) => {
-        try {
-            const product = await Product.findById(id);
-            return product;
-        } catch (error) {
-            throw error;
-        }
-    },
-    getAllProducts: async () => {
-        try {
-            const products = await Product.find();
-            return products;
-        } catch (error) {
-            throw error;
-        }
+  addProduct: async (productData) => {
+    try {
+      const product = new Product(productData);
+      return await product.save();
+    } catch (error) {
+      throw error;
     }
+  },
+
+  getProductById: async (id) => {
+    try {
+      return await Product.findById(id).populate('children');
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  getAllProducts: async () => {
+    try {
+      return await Product.find().populate('children');
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  updateProduct: async (id, productData) => {
+    try {
+      return await Product.findByIdAndUpdate(id, productData, { new: true });
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  deleteProduct: async (id) => {
+    try {
+      return await Product.findByIdAndDelete(id);
+    } catch (error) {
+      throw error;
+    }
+  }
 };
 
 module.exports = productServices;

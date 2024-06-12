@@ -3,6 +3,9 @@ const Customer = require('../config/models/customerModel');
 const customerServices = {
     addCustomer: async (data) => {
         try {
+            let isDuplicate = await Customer.find({email:data.email})
+            if(isDuplicate.length>0)
+                throw new Error("Customer has already been registered.")
             const newCustomer = await Customer.create(data);
             return newCustomer;
         } catch (error) {

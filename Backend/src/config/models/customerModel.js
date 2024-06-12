@@ -5,14 +5,18 @@ const cartItemSchema = new mongoose.Schema({
     quantity: { type: Number, required: true, min: 1 },
     discount: { type: Number }
 });
-
+const addressSchema = new mongoose.Schema({
+    street: { type: String, required: true },
+    city: { type: String, required: true },
+    pin: { type: String, required: true },
+})
 const CustomerSchema = new mongoose.Schema(
     {
         email: { type: String, required: true, unique: true, trim: true },
+        address: { type: addressSchema },
         firstname: { type: String, required: true, trim: true },
         lastname: { type: String, required: true, trim: true },
-        phone: { type: Number, required: true, trim: true },
-        address: { type: String },
+        phone: { type: Number, required: true },
         cart: [cartItemSchema]
     },
     {

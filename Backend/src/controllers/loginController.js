@@ -27,10 +27,10 @@ class LoginController {
             console.log(info)
             return res.status(200).json({status: true,data:{msg:info},err: {}})
         } catch (error) {
-            return res.status(400).json({ status: false, data: {}, err: error })
+            return res.status(200).json({ status: false, data: {}, err: error })
         }
     }
 
 }
 
-module.exports = LoginController
+module.exports = new LoginController();
