@@ -25,7 +25,7 @@ class LoginController {
         try {
             let info = await userServices.login_user_by_email(email, password)
             console.log(info)
-            return res.status(200).json({status: true,data:{msg:info},err: {}})
+            return res.status(200).json({status: true,data:info,err: {}})
         } catch (error) {
             return res.status(200).json({ status: false, data: {}, err: error })
         }

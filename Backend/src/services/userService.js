@@ -29,7 +29,7 @@ async function _login_user_by_email(email, pass){
             return reject("Invalid credentials.")
         const match = await cryptService.verify(pass, user.password)
         if(match)
-            return resolve(`Logged in. Welcome ${user.user_email}`)
+            return resolve(`${user.user_email}`)
     })
 }
 
