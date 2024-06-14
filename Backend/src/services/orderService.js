@@ -1,5 +1,5 @@
-const Order = require('../config/models/orderModel');
-const Payments = require("../config/models/paymentModel")
+const Order = require('/src/config/models/orderModel');
+const Payments = require("/src/config/models/paymentModel")
 
 const orderServices = {
     addOrder: async (data) => {
