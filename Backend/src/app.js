@@ -6,11 +6,12 @@ const server = require("http").Server(app)
 var db = require("./config/db")
 
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+
 app.set('port', process.env.port || 3000)
 app.use(cors())
+app.get('/', (req, res) => {
+  res.status(200).send('Hello World!')
+})
 app.use("/",routes)
 app.use((req, res,next)=>{
   let err = new Error("Not Found");
