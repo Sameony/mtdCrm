@@ -1,13 +1,18 @@
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
+import { HiCog, HiCurrencyDollar, HiLogout, HiViewGrid } from "react-icons/hi";
+import { MdMenu, MdMenuOpen } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
-export default function NavBar() {
+
+export default function NavBar({toggleSidebar, isSidebarOpen}:any) {
+  const navigate = useNavigate();
   return (
-    <Navbar fluid rounded>
-      <Navbar.Brand href="https://flowbite-react.com">
+    <Navbar className="bg-gray-50 drop-shadow-sm" fluid rounded>
+      <Navbar.Brand href="/">
         <img src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
-        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Flowbite React</span>
+        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">MTD React</span>
       </Navbar.Brand>
-      <div className="flex md:order-2">
+      <div className=" flex items-center md:order-2">
         <Dropdown
           arrowIcon={false}
           inline
@@ -16,26 +21,21 @@ export default function NavBar() {
           }
         >
           <Dropdown.Header>
-            <span className="block text-sm">Bonnie Green</span>
-            <span className="block truncate text-sm font-medium">name@flowbite.com</span>
+            <span className="block text-base font-thin">Bonnie Green</span>
+            <span className="block truncate text-sm">{sessionStorage.getItem("user")}</span>
           </Dropdown.Header>
-          <Dropdown.Item>Dashboard</Dropdown.Item>
-          <Dropdown.Item>Settings</Dropdown.Item>
-          <Dropdown.Item>Earnings</Dropdown.Item>
+          <Dropdown.Item href="/" icon={HiViewGrid}>Dashboard</Dropdown.Item>
+          <Dropdown.Item icon={HiCog}>Settings</Dropdown.Item>
+          <Dropdown.Item icon={HiCurrencyDollar}>Earnings</Dropdown.Item>
           <Dropdown.Divider />
-          <Dropdown.Item>Sign out</Dropdown.Item>
+          <Dropdown.Item icon={HiLogout} onClick={()=>{
+            sessionStorage.clear()
+            navigate("/login");
+          }}>Sign out</Dropdown.Item>
         </Dropdown>
-        <Navbar.Toggle />
+        {isSidebarOpen?<MdMenuOpen className="text-2xl mx-2 lg:hidden" onClick={()=>toggleSidebar()} />:<MdMenu className="text-2xl mx-2 lg:hidden" onClick={()=>toggleSidebar()} />}
       </div>
-      <Navbar.Collapse>
-        <Navbar.Link href="#" active>
-          Home
-        </Navbar.Link>
-        <Navbar.Link href="#">About</Navbar.Link>
-        <Navbar.Link href="#">Services</Navbar.Link>
-        <Navbar.Link href="#">Pricing</Navbar.Link>
-        <Navbar.Link href="#">Contact</Navbar.Link>
-      </Navbar.Collapse>
+
     </Navbar>
   );
 }
