@@ -43,13 +43,10 @@ const router = createBrowserRouter([
         element: <CreateOrder />
       },
       {
-        path: "/orders/payment",
+        path: "/orders/:id/payment",
         element: <PaymentLayout />
       },
-      {
-        path: "/orders/add",
-        element: <CreateOrder />
-      }
+      
       // Add other routes that should include the sidebar here
     ],
   },

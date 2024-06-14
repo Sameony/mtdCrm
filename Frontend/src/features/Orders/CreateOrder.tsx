@@ -85,7 +85,7 @@ const OrderForm: React.FC = () => {
       amt = Number(amt) - Number(formState.discount/100)*amt
     }
 
-    setFormState({...formState, amount_total:amt})
+    setFormState({...formState, amount_total:amt, due_amount:amt})
     // console.log(selectedProducts)
   }, [selectedProducts, formState.added_cost, formState.tax, formState.discount])
 
@@ -145,7 +145,7 @@ const OrderForm: React.FC = () => {
       // console.log(data)
       if (res.data.status) {
         toast.success("Order successfully created.")
-        navigate("/orders/payment")
+        navigate(`/orders/${res.data.data._id}/payment`)
       }
     } catch (error) {
       toast.error("Something went wrong.")

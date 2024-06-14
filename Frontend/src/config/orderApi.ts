@@ -18,6 +18,9 @@ const getAllProducts = async () => {
     return await axios.get(apiUrl.getAllProducts)
 }
 
+const addPaymentToOrder = async (param:any, body:any) =>{
+    return await axios.post(`${apiUrl.addPaymentToOrder}/${param}`,body)
+}
 
 
 
@@ -25,5 +28,6 @@ export const orderApis = {
     getAllOrders,
     getOrderByID,
     createOrder,
-    getAllProducts
+    getAllProducts,
+    addPaymentToOrder
 }

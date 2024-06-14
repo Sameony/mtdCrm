@@ -9,7 +9,10 @@ export const apiUrl = {
     addOrder:`${base}/addOrder`,
     getOrderByID:`${base}/getOrderById/:id`,
     getAllOrders:`${base}/getAllOrders`,
-    getAllProducts:`${base}/products`
+    getAllProducts:`${base}/products`,
+    addPaymentToOrder:`${base}/addPaymentToOrderId`
+    
+
     
 
 }
