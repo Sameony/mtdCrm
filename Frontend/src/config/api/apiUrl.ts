@@ -1,4 +1,4 @@
-const base = "http://localhost:3000"
+const base = "https://mtd-crm.vercel.app"
 
 export const apiUrl = {
     login :`${base}/loginUser`,
