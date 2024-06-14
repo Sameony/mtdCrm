@@ -1,9 +1,9 @@
 import { Sidebar } from "flowbite-react";
 import { BiBuoy } from "react-icons/bi";
-import { HiArrowSmRight, HiChartPie, HiInbox, HiOutlineMinusSm, HiOutlinePlusSm, HiShoppingBag, HiTable, HiUser, HiViewBoards } from "react-icons/hi";
+import { HiChartPie, HiOutlineMinusSm, HiOutlinePlusSm, HiShoppingBag, HiUser } from "react-icons/hi";
 import { twMerge } from "tailwind-merge";
 
-const NavSideBar = ({isSidebarOpen, setIsSidebarOpen}:any) => {
+const NavSideBar = ({isSidebarOpen}:any) => {
     
     return (
         <Sidebar aria-label="Sidebar" className={`${isSidebarOpen ? "" : "hidden"} h-[calc(100vh-4rem)] overflow-hidden w-screen sm:w-[18rem] sm:overflow-auto`}>

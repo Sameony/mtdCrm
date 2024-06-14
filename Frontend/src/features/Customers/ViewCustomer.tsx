@@ -26,7 +26,7 @@ const CustomerList = () => {
   const hasFetchedCustomers = useRef(false);
 
   useEffect(() => {
-    // console.log('useEffect for searchQuery and customers triggered');
+    console.log('useEffect for searchQuery and customers triggered',loading);
     let temp = customers.filter(
       customer =>
         customer.firstname.toLowerCase().includes(searchQuery.toLowerCase()) ||

@@ -24,7 +24,7 @@ const AddCustomer: React.FC = () => {
     phone: 0,
   });
   const [loading, setLoading] = useState<boolean>(false);
-
+  console.log(loading)
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if (name.includes('address.')) {
