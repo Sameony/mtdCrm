@@ -13,11 +13,9 @@ var jsonParser = bodyParser.json()
 router.post("/addUser", jsonParser, loginController.addUser)
 router.post("/loginUser", jsonParser, loginController.loginUser)
 
-
 router.post('/addCustomer', jsonParser, customerController.addCustomer);
 router.get('/getCustomerById/:id', jsonParser, customerController.getCustomerById);
 router.get('/getCustomers', jsonParser, customerController.getAllCustomers);
-
 
 router.post("/addProduct", jsonParser, productController.addProduct);
 router.get("/products/:id", jsonParser, productController.getProductById);
@@ -28,5 +26,9 @@ router.delete("/DeleteProductById/:id", jsonParser, productController.deleteProd
 router.post('/addOrder', jsonParser, orderController.addOrder);
 router.post('/getOrderById/:id', jsonParser, orderController.getOrderById);
 router.get('/getAllOrders', jsonParser, orderController.getAllOrders);
+router.post('/getPaymentByOrderId/:id', jsonParser, orderController.getPaymentsByOrderId);
+router.post('/updatePaymentById/:id', jsonParser, orderController.updatePaymentById);
+router.post('/addPaymentToOrderId/:id', jsonParser, orderController.addPaymentToOrderId);
+
 
 module.exports = router
