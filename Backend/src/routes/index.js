@@ -20,9 +20,9 @@ router.get('/getCustomers', jsonParser, customerController.getAllCustomers);
 router.post("/addProduct", jsonParser, productController.addProduct);
 router.get("/products/:id", jsonParser, productController.getProductById);
 router.get("/products", jsonParser, productController.getAllProducts);
-router.put("/updateProductById/:id", jsonParser, productController.updateProduct);
+router.post("/updateProductById/:id", jsonParser, productController.updateProduct);
 router.delete("/DeleteProductById/:id", jsonParser, productController.deleteProduct);
-
+ 
 router.post('/addOrder', jsonParser, orderController.addOrder);
 router.post('/getOrderById/:id', jsonParser, orderController.getOrderById);
 router.post('/updateOrder/:id', jsonParser, orderController.updateOrderById);
