@@ -12,6 +12,10 @@ const Home = () => {
   useEffect(() => {
     if (!sessionStorage.getItem("user"))
       navigate("/login")
+    if(window.innerWidth<700)
+      {
+        setIsSidebarOpen(false)
+      }
   }, [])
   return (
 

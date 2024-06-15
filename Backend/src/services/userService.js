@@ -22,7 +22,7 @@ async function _add_user_by_email(email, pass){
     })
 }
 async function _login_user_by_email(email, pass){
-    let data = await User.find({user_email:email}).catch(err=>console.log(err))
+    let data = await User.find({ user_email: { $regex: new RegExp(`^${email}$`, 'i') } }).catch(err=>console.log(err))
     let user = data[0]
     return new Promise(async (resolve, reject)=>{
         if(!user)
