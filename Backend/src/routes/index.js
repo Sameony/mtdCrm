@@ -25,8 +25,9 @@ router.delete("/DeleteProductById/:id", jsonParser, productController.deleteProd
 
 router.post('/addOrder', jsonParser, orderController.addOrder);
 router.post('/getOrderById/:id', jsonParser, orderController.getOrderById);
+router.post('/updateOrder/:id', jsonParser, orderController.updateOrderById);
 router.get('/getAllOrders', jsonParser, orderController.getAllOrders);
-router.post('/getPaymentByOrderId/:id', jsonParser, orderController.getPaymentsByOrderId);
+router.get('/getPaymentByOrderId/:id', jsonParser, orderController.getPaymentsByOrderId);
 router.post('/updatePaymentById/:id', jsonParser, orderController.updatePaymentById);
 router.post('/addPaymentToOrderId/:id', jsonParser, orderController.addPaymentToOrderId);
 

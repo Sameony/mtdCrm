@@ -25,7 +25,22 @@ const productServices = {
       throw error;
     }
   },
-
+  getProductNames: async (prod_data) => {
+    try {
+      const products = await Promise.all(prod_data.map(async prod => {
+        // console.log(prod.product_id)
+        let parent = await Product.findById(prod.product_id).catch(err=>console.log)
+        console.log(parent)
+        if(!parent)
+          throw new Error("Product not found")
+        let child = parent.children.filter(child => child.SKU === prod.SKU)
+        return { ...child, quantity: prod.quantity, parent_name:parent.name }
+      }))
+      return products
+    } catch (error) {
+      throw error;
+    }
+  },
   updateProduct: async (id, productData) => {
     try {
       return await Product.findByIdAndUpdate(id, productData, { new: true });

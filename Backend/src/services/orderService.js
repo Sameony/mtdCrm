@@ -1,9 +1,12 @@
 const Order = require('../config/models/orderModel');
-const Payments = require("../config/models/paymentModel")
+const Payments = require("../config/models/paymentModel");
+const customerServices = require('./customerService');
+const productServices = require('./productService');
 
 const orderServices = {
     addOrder: async (data) => {
         try {
+            // console.log(data)
             const newOrder = await Order.create(data);
             return newOrder;
         } catch (error) {
@@ -13,6 +16,16 @@ const orderServices = {
     getOrderById: async (id) => {
         try {
             const order = await Order.findById(id);
+            let products = await productServices.getProductNames(order.products);
+            let customer = await customerServices.getCustomerById(order.customer);
+            return {order, products, customer};
+        } catch (error) {
+            throw error;
+        }
+    },
+    updateOrderById: async(id,data)=>{
+        try {
+            const order = await Order.findByIdAndUpdate(id, data);
             return order;
         } catch (error) {
             throw error;
@@ -20,7 +33,15 @@ const orderServices = {
     },
     getAllOrders: async () => {
         try {
-            const orders = await Order.find();
+            const base_orders = await Order.find();
+            const orders = await Promise.all(
+                base_orders.map(async (order)=>{
+                    let customer = await customerServices.getCustomerById(order.customer);
+                    let products = await productServices.getProductNames(order.products);
+                    let payments = await orderServices.getPaymentsByOrderId(order._id)
+                    return {order, customer, products, payments}
+                })
+            )
             return orders;
         } catch (error) {
             throw error;
@@ -71,7 +92,7 @@ const orderServices = {
     },
     updatePaymentById: async (id, data) => {
         try {
-            const payment = await Order.findByIdAndUpdate(id, data);
+            const payment = await Payments.findByIdAndUpdate(id, data);
             return payment;
         } catch (error) {
             throw error;

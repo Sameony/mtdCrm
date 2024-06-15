@@ -53,6 +53,14 @@ class OrderController {
             return res.json({ status: false, data: {}, err: error.message });
         }
     }
+    updateOrderById = async (req, res, next) => {
+        try {
+            const order = await orderServices.updateOrderById(req.params.id, req.body);
+            return res.json({ status: true, data: order, err: {} });
+        } catch (error) {
+            return res.json({ status: false, data: {}, err: error.message });
+        }
+    }
 
 
 }

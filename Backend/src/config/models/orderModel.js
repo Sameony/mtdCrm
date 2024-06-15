@@ -22,7 +22,7 @@ var OrderSchema = new mongoose.Schema(
             enum: ['MTD Shipping', 'Store Pickup'],
             required: true
         },
-        ship_address: { type: addressSchema, required: true },
+        ship_address: { type: addressSchema},
         comment: { type: String },
         added_cost: { type: Number, default: 0 },
         discount: { type: Number, default: 0 },
