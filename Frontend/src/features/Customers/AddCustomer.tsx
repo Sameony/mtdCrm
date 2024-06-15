@@ -68,7 +68,7 @@ const AddCustomer: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-xl mx-auto bg-white p-8 shadow-md rounded-lg">
-      <h2 className="text-2xl font-semibold mb-6">Create Customer</h2>
+      <h2 className="text-2xl font-semibold mb-6">Add Customer</h2>
 
       <div className="mb-4">
         <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">* Email:</label>

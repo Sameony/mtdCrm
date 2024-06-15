@@ -1,5 +1,6 @@
 import { Sidebar } from "flowbite-react";
 import { BiBuoy } from "react-icons/bi";
+import { BsFillClipboard2CheckFill } from "react-icons/bs";
 import { HiChartPie, HiOutlineMinusSm, HiOutlinePlusSm, HiShoppingBag, HiUser } from "react-icons/hi";
 import { twMerge } from "tailwind-merge";
 
@@ -19,6 +20,19 @@ const NavSideBar = ({isSidebarOpen}:any) => {
                     </Sidebar.Item>
                     <Sidebar.Collapse
                         icon={HiShoppingBag}
+                        label="Products"
+                        renderChevronIcon={(theme, open) => {
+                            const IconComponent = open ? HiOutlineMinusSm : HiOutlinePlusSm;
+
+                            return <IconComponent aria-hidden className={twMerge(theme.label.icon.open[open ? 'on' : 'off'])} />;
+                        }}
+                    >
+                        <Sidebar.Item href="/products/">View Products</Sidebar.Item>
+                        <Sidebar.Item href="/products/add">Add Products</Sidebar.Item>
+                      
+                    </Sidebar.Collapse>
+                    <Sidebar.Collapse
+                        icon={BsFillClipboard2CheckFill}
                         label="Orders"
                         renderChevronIcon={(theme, open) => {
                             const IconComponent = open ? HiOutlineMinusSm : HiOutlinePlusSm;
@@ -32,15 +46,15 @@ const NavSideBar = ({isSidebarOpen}:any) => {
                         <Sidebar.Item href="#">Shipping</Sidebar.Item>
                     </Sidebar.Collapse>
                    
-                    <Sidebar.Collapse href="#" icon={HiUser} label="Users"
+                    <Sidebar.Collapse href="#" icon={HiUser} label="Customers"
                      renderChevronIcon={(theme, open) => {
                             const IconComponent = open ? HiOutlineMinusSm : HiOutlinePlusSm;
 
                             return <IconComponent aria-hidden className={twMerge(theme.label.icon.open[open ? 'on' : 'off'])} />;
                         }}>
                         
-                        <Sidebar.Item href="/users">View Users</Sidebar.Item>
-                        <Sidebar.Item href="/users/add">Add Users</Sidebar.Item>
+                        <Sidebar.Item href="/customers">View Customers</Sidebar.Item>
+                        <Sidebar.Item href="/customers/add">Add Customers</Sidebar.Item>
                     </Sidebar.Collapse>
                 </Sidebar.ItemGroup>
                 <Sidebar.ItemGroup>

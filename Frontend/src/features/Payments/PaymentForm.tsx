@@ -4,6 +4,7 @@ import React from 'react';
 interface PaymentFormProps {
     payment: Payment;
     onChange: (field: string, value: string | number) => void;
+    isExisting?: boolean
 }
 
 interface Payment {
@@ -17,7 +18,7 @@ interface Payment {
     finance_id?: string;
 }
 
-const PaymentForm: React.FC<PaymentFormProps> = ({ payment, onChange }) => {
+const PaymentForm: React.FC<PaymentFormProps> = ({ payment, onChange, isExisting }) => {
     const renderFields = () => {
         switch (payment.mode) {
             case 'Online':
@@ -27,6 +28,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ payment, onChange }) => {
                             type="text"
                             variant="outlined"
                             label="Transaction ID"
+                            disabled={isExisting}
                             value={payment.txn_id || ''}
                             onChange={(e) => onChange('txn_id', e.target.value)}
                         // className="my-2"
@@ -35,6 +37,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ payment, onChange }) => {
                             type="text"
                             variant="outlined"
                             label="Link"
+                            disabled={isExisting}
                             value={payment.link || ''}
                             onChange={(e) => onChange('link', e.target.value)}
                         // className="my-2"
@@ -48,6 +51,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ payment, onChange }) => {
                             type="text"
                             variant="outlined"
                             label="Sender's Name"
+                            disabled={isExisting}
                             value={payment.sender_name || ''}
                             onChange={(e) => onChange('sender_name', e.target.value)}
                         // className="my-2"
@@ -56,6 +60,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ payment, onChange }) => {
                             type="email"
                             variant="outlined"
                             label="Sender's Email"
+                            disabled={isExisting}
                             value={payment.sender_email || ''}
                             onChange={(e) => onChange('sender_email', e.target.value)}
                         // className="my-2"
@@ -69,6 +74,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ payment, onChange }) => {
                             type="text"
                             variant="outlined"
                             label="Institution Name"
+                            disabled={isExisting}
                             value={payment.institution_name || ''}
                             onChange={(e) => onChange('institution_name', e.target.value)}
                         // className="my-2"
@@ -77,6 +83,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ payment, onChange }) => {
                             type="text"
                             variant="outlined"
                             label="Finance ID"
+                            disabled={isExisting}
                             value={payment.finance_id || ''}
                             onChange={(e) => onChange('finance_id', e.target.value)}
                         // className="my-2"
@@ -93,6 +100,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ payment, onChange }) => {
     return (
         <div className="p-4 rounded-md flex flex-col gap-2">
             <Select
+                disabled={isExisting}
                 value={payment.mode}
                 onChange={(e) => onChange('mode', e.target.value)}
                 className="my-2"
@@ -104,6 +112,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ payment, onChange }) => {
                 <option value="Card">Card</option>
             </Select>
             <FloatingLabel
+                disabled={isExisting}
                 variant='outlined'
                 type="number"
                 label="Amount *"

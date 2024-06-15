@@ -15,6 +15,9 @@ import { ToastContainer } from 'react-toastify';
 import ViewOrder from './features/Orders/ViewOrder.tsx';
 import CreateOrder from './features/Orders/CreateOrder.tsx';
 import PaymentLayout from './features/Payments/PaymentLayout.tsx';
+import EditOrder from './features/Orders/EditOrder.tsx';
+import ViewProducts from './features/Products/ViewProducts.tsx';
+import ProductForm from './features/Products/AddProducts.tsx';
 
 
 const router = createBrowserRouter([
@@ -27,11 +30,11 @@ const router = createBrowserRouter([
         element: <Dashboard />,
       },
       {
-        path: "/users",
+        path: "/customers",
         element: <ViewCustomers />
       },
       {
-        path: "/users/add",
+        path: "/customers/add",
         element: <AddCustomer />
       },
       {
@@ -43,9 +46,26 @@ const router = createBrowserRouter([
         element: <CreateOrder />
       },
       {
+        path: "/orders/:id/edit",
+        element: <EditOrder />
+      },
+      {
         path: "/orders/:id/payment",
         element: <PaymentLayout />
       },
+      {
+        path:"/products",
+        element: <ViewProducts />
+      },
+      {
+        path:"/products/add",
+        element: <ProductForm />
+      },
+      {
+        path:"/products/:id/edit",
+        element: <ProductForm />
+      },
+      
       
       // Add other routes that should include the sidebar here
     ],

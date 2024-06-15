@@ -2,6 +2,8 @@ import { useEffect, useState, useRef } from 'react';
 import { customerApis } from '../../config/customerApi';
 import { toast } from 'react-toastify';
 import { Table } from 'flowbite-react';
+import { useNavigate } from 'react-router-dom';
+import { RiAddBoxFill } from 'react-icons/ri';
 
 interface Address {
   street: string;
@@ -24,9 +26,10 @@ const CustomerList = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>([]);
   const hasFetchedCustomers = useRef(false);
+  const navigate = useNavigate()
 
   useEffect(() => {
-    console.log('useEffect for searchQuery and customers triggered',loading);
+    console.log('useEffect for searchQuery and customers triggered', loading);
     let temp = customers.filter(
       customer =>
         customer.firstname.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -62,8 +65,13 @@ const CustomerList = () => {
 
   return (
     <div className="container mx-auto p-8">
-      <h2 className="text-2xl font-semibold mb-6">Customer List</h2>
-
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-semibold">Customer List</h2>
+        <button className=" bg-green-500 text-white py-2 px-4 rounded-md shadow-sm hover:bg-green-600 focus:outline-none focus:ring focus:ring-indigo-200"
+          onClick={() => navigate("/customers/add")}>
+          <span className='flex gap-2 items-center'><RiAddBoxFill />Add Customer</span>
+        </button>
+      </div>
       <div className="mb-6">
         <input
           type="text"

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { orderApis } from '../config/orderApi';
+import { toast } from 'react-toastify';
 
 interface Size {
     L: number;
@@ -46,8 +47,9 @@ const AutocompleteProductInput: React.FC<{ value: string, onChange: (product: Ch
             // console.log(response)
             const data: Product[] = response.data.data
             setProducts(data);
-            setFilteredProducts(data.flatMap(product => product.children.map(child => ({ ...child, parentName: product.name }))));
-        } catch (error) {
+            setFilteredProducts(data.flatMap(product => product.children.map(child => ({ ...child, parentName: product.name, parent_id:product._id }))));
+        } catch (error:any) {
+            toast.error(error.response?.data.err.toString()??error.message.toString());
             console.log(error)
         }
        
