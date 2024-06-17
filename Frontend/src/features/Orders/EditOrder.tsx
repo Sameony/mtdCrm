@@ -6,6 +6,7 @@ import { orderApis } from '../../config/orderApi';
 import { MdDelete } from 'react-icons/md';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaChevronLeft } from 'react-icons/fa';
+import Loading from '../../util/Loading';
 
 interface Address {
     street: string;
@@ -68,7 +69,7 @@ const OrderForm: React.FC = () => {
         status: 'Processing'
     });
     const [selectedProducts, setSelectedProducts] = useState<(Child & { quantity: number })[]>([]);
-    // const [inputValue, setInputValue] = useState('');
+    const [loading, setLoading] = useState<boolean>(false);
     const params = useParams();
     const { id } = params;
     const navigate = useNavigate();
@@ -79,6 +80,7 @@ const OrderForm: React.FC = () => {
 
     const fetchOrderDetails = async () => {
         try {
+            setLoading(true)
             const response = await orderApis.getOrderByID(id);
             console.log(response)
             if (response.data.status) {
@@ -90,7 +92,7 @@ const OrderForm: React.FC = () => {
                 setFormState({
                     customer: customer.firstname + customer.lastname,
                     ship_method: order.ship_method,
-                    ship_address:{
+                    ship_address: {
                         street: order.ship_address?.street,
                         city: order.ship_address?.city,
                         pin: order.ship_address?.pin
@@ -117,6 +119,8 @@ const OrderForm: React.FC = () => {
             }
         } catch (error: any) {
             toast.error(error.response.data.err);
+        } finally {
+            setLoading(false)
         }
     };
 
@@ -174,21 +178,24 @@ const OrderForm: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true)
         try {
-            let data = {comment:formState.comment, ship_method:formState.ship_method, ship_address:formState.ship_address, status:formState.status};
-            let res = await orderApis.updateOrder(id,data);
+            let data = { comment: formState.comment, ship_method: formState.ship_method, ship_address: formState.ship_address, status: formState.status };
+            let res = await orderApis.updateOrder(id, data);
             if (res.data.status) {
                 toast.success("Order successfully updated.");
             } else {
-                toast.error(res.data.err??"Something went wrong")
+                toast.error(res.data.err ?? "Something went wrong")
             }
-        } catch (error:any) {
+        } catch (error: any) {
             toast.error(error.response.data.err);
+        } finally {
+            setLoading(false)
         }
     };
 
     return (
-        <form onSubmit={handleSubmit} className="max-w-2xl mx-auto bg-white p-8 shadow-md rounded-lg">
+        loading?<Loading />:<form onSubmit={handleSubmit} className="max-w-2xl mx-auto bg-white p-8 shadow-md rounded-lg">
             <div className='mb-6 flex items-center justify-between'>
                 <h2 className="text-2xl font-semibold ">Edit Order</h2>
                 <Button className='' color={'gray'} onClick={() => navigate(-1)}>
@@ -418,7 +425,7 @@ const OrderForm: React.FC = () => {
                 <button type="submit" className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-200">
                     Update Order
                 </button>
-                <button onClick={()=>navigate(`/orders/${id}/payment`)} className="w-full bg-green-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring focus:ring-indigo-200">
+                <button onClick={() => navigate(`/orders/${id}/payment`)} className="w-full bg-green-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring focus:ring-indigo-200">
                     Transaction Record
                 </button>
             </div>

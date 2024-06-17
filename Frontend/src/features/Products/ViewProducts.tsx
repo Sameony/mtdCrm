@@ -3,6 +3,8 @@ import { orderApis } from '../../config/orderApi';
 import { MdEdit } from 'react-icons/md';
 import { Select, TextInput } from 'flowbite-react';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../../util/Loading';
+import { toast } from 'react-toastify';
 
 interface Size {
     L: number;
@@ -51,6 +53,7 @@ const ViewProducts: React.FC = () => {
     }, [searchTerm, selectedCategory, products]);
 
     const fetchProducts = async () => {
+        setLoading(true)
         try {
             const response = await orderApis.getAllProducts() // Adjust the endpoint as necessary
             if (response.data.status) {
@@ -62,9 +65,11 @@ const ViewProducts: React.FC = () => {
                 });
                 setCategories(categorySet);
             } else {
+                toast.error(response.data.err)
                 setError('Failed to fetch products');
             }
-        } catch (err) {
+        } catch (err:any) {
+            toast.error(err.response.data.err??"")
             setError('Error fetching products');
         } finally {
             setLoading(false);
@@ -104,7 +109,7 @@ const ViewProducts: React.FC = () => {
         navigate(`/products/${productId}/edit`);
     };
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <Loading />
     if (error) return <div>{error}</div>;
 
     return (

@@ -6,6 +6,7 @@ import { orderApis } from '../../config/orderApi';
 import { toast } from 'react-toastify';
 import { FaChevronLeft } from 'react-icons/fa';
 import { Button } from 'flowbite-react';
+import Loading from '../../util/Loading';
 
 interface Payment {
     mode: string;
@@ -23,6 +24,7 @@ const PaymentLayout: React.FC = () => {
     const [payments, setPayments] = useState<Payment[]>([{ mode: 'Online', amount: 0 }]);
     const [existingPayments, setExistingPayments] = useState<Payment[]>([]);
     const [activeIndex, setActiveIndex] = useState<string | null>("");
+    const [loading, setLoading] = useState<boolean>(false);
 
     let params = useParams()
     const navigate = useNavigate()
@@ -34,7 +36,7 @@ const PaymentLayout: React.FC = () => {
 
     const getPaymentDetails = async () =>{
         try {
-            // setLoading(true);
+            setLoading(true);
             const response = await orderApis.getPaymentById(id);
             if (response.data.status) {
               setExistingPayments(response.data.data);
@@ -42,7 +44,7 @@ const PaymentLayout: React.FC = () => {
           } catch (error: any) {
             toast.error(error.response?.data.err.toString()??error.message.toString());
           } finally {
-            // setLoading(false);
+            setLoading(false);
           }
     }
     const handlePaymentChange = (index: number, field: string, value: string | number) => {
@@ -71,8 +73,10 @@ const PaymentLayout: React.FC = () => {
             toast.info("Please add transaction details before proceeding.")
             return;
         }
+
         try {
-            console.log(payments)
+            setLoading(true)
+            // console.log(payments)
             let res = await orderApis.addPaymentToOrder(id, payments)
             if (res.data.status) {
                 toast.success(`Payment of amount ${res.data.data.amount} has been received for the order.`)
@@ -83,10 +87,12 @@ const PaymentLayout: React.FC = () => {
             console.log(res)
         } catch (error: any) {
             toast.error(error.response.data.err)
+        } finally {
+            setLoading(false)
         }
     }
     return (
-        <div className='mx-8'>
+        loading?<Loading />:<div className='mx-8'>
             <div className="flex mb-4 justify-between items-center">
                 <Button className='' color={'gray'} onClick={() => navigate("/orders")}>
                     <span className='flex gap-2 items-center'><FaChevronLeft />Back</span>

@@ -29,7 +29,7 @@ interface Product {
     children: Child[];
 }
 
-const AutocompleteProductInput: React.FC<{ value: string, onChange: (product: Child & { parentName: string }) => void }> = ({ value, onChange }) => {
+const AutocompleteProductInput: React.FC<{ value: string,setInputValue:(any), onChange: (product: Child & { parentName: string }) => void }> = ({ value, onChange, setInputValue }) => {
     const [products, setProducts] = useState<Product[]>([]);
     const [filteredProducts, setFilteredProducts] = useState<(Child & { parentName: string })[]>([]);
     const [showDropdown, setShowDropdown] = useState(false);
@@ -70,6 +70,7 @@ const AutocompleteProductInput: React.FC<{ value: string, onChange: (product: Ch
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const query = e.target.value.toLowerCase();
+        setInputValue(query)
         setShowDropdown(true);
 
         const filtered = products.flatMap(product =>

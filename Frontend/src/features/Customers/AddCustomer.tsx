@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { customerApis } from '../../config/customerApi';
 import { toast } from 'react-toastify';
+import Loading from '../../util/Loading';
+import { useNavigate } from 'react-router-dom';
 
 interface Address {
   street: string;
@@ -24,7 +26,9 @@ const AddCustomer: React.FC = () => {
     phone: 0,
   });
   const [loading, setLoading] = useState<boolean>(false);
-  console.log(loading)
+  const navigate = useNavigate();
+
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if (name.includes('address.')) {
@@ -52,6 +56,7 @@ const AddCustomer: React.FC = () => {
       console.log(res)
       if (res.data.status) {
         toast.success("New customer added successfully")
+        navigate("/customers")
       }
       else{
         toast.error(res.data.err)
@@ -67,7 +72,7 @@ const AddCustomer: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-xl mx-auto bg-white p-8 shadow-md rounded-lg">
+    loading?<Loading />:<form onSubmit={handleSubmit} className="max-w-xl mx-auto bg-white p-8 shadow-md rounded-lg">
       <h2 className="text-2xl font-semibold mb-6">Add Customer</h2>
 
       <div className="mb-4">

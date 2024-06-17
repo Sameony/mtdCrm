@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { Table, TextInput } from 'flowbite-react';
+import { Table, TextInput, ToggleSwitch } from 'flowbite-react';
 import AutoCompleteCustomerInput from '../../util/AutoCompleteCustomerInput';
 import AutocompleteProductInput from '../../util/AutoCompleteProductInput';
 import { orderApis } from '../../config/orderApi';
 import { MdDelete } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../../util/Loading';
 
 interface Address {
   street: string;
@@ -25,6 +26,7 @@ interface OrderFormState {
   due_amount: number;
   paid_amount: number;
   status: string;
+  sub_total: number;
 }
 
 interface Size {
@@ -65,35 +67,53 @@ const OrderForm: React.FC = () => {
     amount_total: 0,
     due_amount: 0,
     paid_amount: 0,
-    status: 'Processing'
+    sub_total: 0,
+    status: 'Processing',
+
   });
   const [selectedProducts, setSelectedProducts] = useState<(Child & { quantity: number })[]>([]);
   const [inputValue, setInputValue] = useState('');
-  // const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
   const [customerName, setCustomerName] = useState('');
+  const [hasTax, setHasTax] = useState<boolean>(false)
   const navigate = useNavigate()
 
   useEffect(() => {
     // handle amount change
-    let amt = selectedProducts.reduce((acc, curr) => {
-      acc = Number(acc) + Number(curr.sale_price * curr.quantity);
-      return acc;
-    }, 0)
+    let amt = formState.sub_total
     if (formState.added_cost)
       amt = Number(amt) + Number(formState.added_cost)
+    if (formState.tax)
+      amt = Number(amt) + Number(formState.tax)
     if (formState.discount) {
       amt = Number(amt) - Number(formState.discount / 100) * amt
     }
 
     setFormState({ ...formState, amount_total: amt, due_amount: amt })
-    // console.log(selectedProducts)
-  }, [selectedProducts, formState.added_cost, formState.tax, formState.discount])
+  }, [formState.sub_total, formState.added_cost, formState.tax, formState.discount])
+
+  useEffect(() => {
+    let amt = selectedProducts.reduce((acc, curr) => {
+      acc = Number(acc) + Number(curr.sale_price * curr.quantity);
+      return acc;
+    }, 0)
+    setFormState({ ...formState, sub_total: amt })
+  }, [selectedProducts])
+
+  useEffect(() => {
+    let amt = 0
+    if (hasTax)
+      amt = Number(13 / 100) * formState.sub_total
+
+    setFormState({ ...formState, tax: amt })
+  }, [hasTax])
+
 
   const handleProductChange = (product: Child & { parentName: string }) => {
     if (!selectedProducts.some(p => p.SKU === product.SKU)) {
       setSelectedProducts([...selectedProducts, { ...product, quantity: 1 }]);
+      setInputValue('');
     }
-    setInputValue('');
   };
 
   const handleQuantityChange = (SKU: string, quantity: number) => {
@@ -111,7 +131,6 @@ const OrderForm: React.FC = () => {
     setFormState({ ...formState, customer: customerId });
     setCustomerName(customerName);
   };
-
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -141,34 +160,37 @@ const OrderForm: React.FC = () => {
       toast.info("Please select a customer.")
       return;
     } else if (formState.ship_method !== "Store Pickup") {
-      if (!formState.ship_address.city || !formState.ship_address.pin || !formState.ship_address.street)
+      if (!formState.ship_address.city || !formState.ship_address.pin || !formState.ship_address.street) {
         toast.info("Please provide complete shipping address")
-      return;
+        return;
+      }
     }
+
+    setLoading(true)
     try {
       const { ship_address, ...formdata } = formState;
       let data = {
         ...formdata,
         ...(formState.ship_method !== "Store Pickup" ? ship_address : {}),
         products: selectedProducts.map(item => {
-          console.log(item)
+          // console.log(item)
           return { SKU: item.SKU, quantity: item.quantity, product_id: item.parent_id }
         })
       }
       let res = await orderApis.createOrder(data)
-      // console.log(data)
       if (res.data.status) {
         toast.success("Order successfully created.")
         navigate(`/orders/${res.data.data._id}/payment`)
       }
     } catch (error) {
       toast.error("Something went wrong.")
+    } finally {
+      setLoading(false)
     }
-    console.log(formState, "----\n---", selectedProducts);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-2xl mx-auto bg-white p-8 shadow-md rounded-lg">
+    loading ? <Loading /> : <form className="max-w-2xl mx-auto bg-white p-8 shadow-md rounded-lg">
       <h2 className="text-2xl font-semibold mb-6">Create Order</h2>
 
       {/* Customer select */}
@@ -182,7 +204,7 @@ const OrderForm: React.FC = () => {
 
       {/* Products add */}
       <label htmlFor="productsInput" className="block text-sm font-medium text-gray-700 mb-2">Add Products:</label>
-      <AutocompleteProductInput value={inputValue} onChange={handleProductChange} />
+      <AutocompleteProductInput value={inputValue} onChange={handleProductChange} setInputValue={setInputValue} />
 
       {/* Product list */}
       <label htmlFor="productsListing" className="block text-sm font-medium text-gray-700 my-2"></label>
@@ -192,15 +214,14 @@ const OrderForm: React.FC = () => {
             <Table className="min-w-full bg-white border border-gray-300">
               <Table.Head>
                 <Table.HeadCell>Product</Table.HeadCell>
-                <Table.HeadCell>SKU</Table.HeadCell>
                 <Table.HeadCell>Quantity</Table.HeadCell>
+                <Table.HeadCell>Price</Table.HeadCell>
                 <Table.HeadCell></Table.HeadCell>
               </Table.Head>
               <Table.Body>
                 {selectedProducts.map(product => (
                   <Table.Row key={product.SKU}>
                     <Table.Cell>{product.parentName} - {product.name}</Table.Cell>
-                    <Table.Cell>{product.SKU}</Table.Cell>
                     <Table.Cell>
                       <input
                         type="number"
@@ -210,6 +231,7 @@ const OrderForm: React.FC = () => {
                         className="w-16 px-2 py-1 border rounded-md"
                       />
                     </Table.Cell>
+                    <Table.Cell>{product.sale_price * product.quantity}</Table.Cell>
                     <Table.Cell className="text-2xl text-red-500">
                       <MdDelete onClick={() => handleRemoveProduct(product.SKU)} />
                     </Table.Cell>
@@ -323,15 +345,32 @@ const OrderForm: React.FC = () => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="tax" className="block text-sm font-medium text-gray-700 mb-2">Tax:</label>
-          <input
+          <label htmlFor="tax" className="block text-sm font-medium text-gray-700 mb-3">{`${hasTax ? "Remove Tax" : "Add Tax"}`}</label>
+          <ToggleSwitch color='indigo' checked={hasTax} onChange={setHasTax} />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="tax" className="block text-sm font-medium text-gray-700 mb-2">Tax amount:</label>
+          <TextInput
             type="number"
             id="tax"
             name="tax"
+            disabled
             min={0}
             value={formState.tax}
             onChange={handleInputChange}
-            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-200"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="sub_total" className="block text-sm font-medium text-gray-700 mb-2">Sub Total:</label>
+          <TextInput
+            type="number"
+            disabled
+            id="sub_total"
+            name="sub_total"
+            value={formState.sub_total}
+            onChange={handleInputChange}
+
           />
         </div>
 
@@ -347,18 +386,7 @@ const OrderForm: React.FC = () => {
           />
         </div>
 
-        {/* <div className="mb-4">
-          <label htmlFor="due_amount" className="block text-sm font-medium text-gray-700 mb-2">Due Amount:</label>
-          <input
-            type="number"
-            id="due_amount"
-            name="due_amount"
-            value={formState.due_amount}
-            onChange={handleInputChange}
-            required
-            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-200"
-          />
-        </div> */}
+
 
         {/* <div className="mb-4">
           <label htmlFor="paid_amount" className="block text-sm font-medium text-gray-700 mb-2">Paid Amount:</label>
@@ -394,8 +422,8 @@ const OrderForm: React.FC = () => {
 
       <button
         type="submit"
-        // disabled={selectedProducts.length < 1}
         className={`w-full bg-indigo-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-200`}
+        onClick={(e) => handleSubmit(e)}
       >
         Proceed to Payments
       </button>

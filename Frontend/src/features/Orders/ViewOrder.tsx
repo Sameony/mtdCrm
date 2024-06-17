@@ -3,12 +3,14 @@ import React, { useState, useEffect } from 'react';
 import { orderApis } from '../../config/orderApi';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../../util/Loading';
 
 
 const ViewOrder: React.FC = () => {
   const [orders, setOrders] = useState<any[]>([]);
   const [filteredOrders, setFilteredOrders] = useState<any[]>([])
   const [search, setSearch] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false)
   const navigate = useNavigate()
   useEffect(() => {
     fetchOrders();
@@ -16,18 +18,20 @@ const ViewOrder: React.FC = () => {
 
   const fetchOrders = async () => {
     try {
-      // setLoading(true);
+      setLoading(true);
       const response = await orderApis.getAllOrders();
       if (response.data.status) {
         setOrders(response.data.data);
         setFilteredOrders(response.data.data);
         // toast.info("Users fetched successfully");
 
+      } else {
+        toast.error(response.data.err)
       }
     } catch (error: any) {
       toast.error(error.response.data.err);
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   };
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,11 +44,11 @@ const ViewOrder: React.FC = () => {
 
   const handleEditOrder = (id: string) => {
     navigate(`/orders/${id}/edit`)
-    console.log(`Edit order with id: ${id}`);
+    // console.log(`Edit order with id: ${id}`);
   };
 
   return (
-    <div className="p-4">
+    loading?<Loading />:<div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Order List</h1>
       <div className="mb-4">
         <input

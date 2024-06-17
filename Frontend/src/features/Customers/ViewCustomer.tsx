@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { Table } from 'flowbite-react';
 import { useNavigate } from 'react-router-dom';
 import { RiAddBoxFill } from 'react-icons/ri';
+import Loading from '../../util/Loading';
 
 interface Address {
   street: string;
@@ -29,7 +30,7 @@ const CustomerList = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    console.log('useEffect for searchQuery and customers triggered', loading);
+    // console.log('useEffect for searchQuery and customers triggered', loading);
     let temp = customers.filter(
       customer =>
         customer.firstname.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -55,6 +56,8 @@ const CustomerList = () => {
         setFilteredCustomers(response.data.data);
         // toast.info("Users fetched successfully");
         hasFetchedCustomers.current = true;
+      } else {
+        toast.error(response.data.err)
       }
     } catch (error: any) {
       toast.error(error.response.data.err);
@@ -64,7 +67,7 @@ const CustomerList = () => {
   };
 
   return (
-    <div className="container mx-auto p-8">
+    loading?<Loading />:<div className="container mx-auto p-8">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-semibold">Customer List</h2>
         <button className=" bg-green-500 text-white py-2 px-4 rounded-md shadow-sm hover:bg-green-600 focus:outline-none focus:ring focus:ring-indigo-200"

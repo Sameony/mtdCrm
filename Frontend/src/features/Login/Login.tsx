@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { authApis } from "../../config/authApi"
-import { Button } from "flowbite-react"
 import { toast } from "react-toastify"
 import { useNavigate } from "react-router-dom"
+import { AiOutlineLoading } from "react-icons/ai"
 
 const Login = () => {
     const [userDetails, setUserDetails] = useState<any>({})
@@ -24,7 +24,7 @@ const Login = () => {
             if (res.data.status) {
                 console.log(res.data)
                 toast.success("Logged in successfully")
-                sessionStorage.setItem("user",res.data.data)
+                sessionStorage.setItem("user", res.data.data)
                 navigate("/")
             } else {
                 toast.error(res.data.err)
@@ -98,14 +98,14 @@ const Login = () => {
                     </div>
 
                     <div>
-                        <Button isProcessing={loading}
+                        <button
                             onClick={() => onFormSubmit()}
                             type="submit"
-                            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2.5  font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
 
                         >
-                            Sign in
-                        </Button>
+                            {loading&&<AiOutlineLoading className="animate-spin h-5 w-5 mr-4" />} Sign in
+                        </button>
                     </div>
 
                 </div>

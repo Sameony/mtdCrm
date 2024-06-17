@@ -5,6 +5,7 @@ import { Button, Table, TextInput, Select } from 'flowbite-react';
 import { MdDelete } from 'react-icons/md';
 import { FaChevronLeft } from 'react-icons/fa';
 import { orderApis } from '../../config/orderApi';  // Adjust the import path according to your project structure
+import Loading from '../../util/Loading';
 
 interface Size {
     L: number;
@@ -51,6 +52,7 @@ const ProductForm: React.FC = () => {
         weight: 0,
         status: 'in stock'
     });
+    const [loading, setLoading] = useState<boolean>(false);
     const params = useParams<{ id?: string }>();
     const { id } = params;
     const navigate = useNavigate();
@@ -62,6 +64,7 @@ const ProductForm: React.FC = () => {
     }, [id]);
 
     const fetchProductDetails = async (productId: string) => {
+        setLoading(true)
         try {
             const response = await orderApis.getProductById(productId);
             if (response.data.status) {
@@ -69,6 +72,8 @@ const ProductForm: React.FC = () => {
             }
         } catch (error: any) {
             toast.error(error.response.data.err);
+        } finally {
+            setLoading(false)
         }
     };
 
@@ -121,6 +126,7 @@ const ProductForm: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true)
         try {
             let res: any;
             if (id) {
@@ -138,11 +144,13 @@ const ProductForm: React.FC = () => {
             
         } catch (error) {
             toast.error("Something went wrong.");
+        } finally {
+            setLoading(false)
         }
     };
 
     return (
-        <form onSubmit={handleSubmit} className="max-w-3xl mx-auto bg-white p-8 shadow-md rounded-lg">
+        loading?<Loading />:<form onSubmit={handleSubmit} className="max-w-3xl mx-auto bg-white p-8 shadow-md rounded-lg">
             <div className='mb-6 flex items-center justify-between'>
                 <h2 className="text-2xl font-semibold ">{id ? "Edit Product" : "Add Product"}</h2>
                 <Button color='gray' onClick={() => navigate(-1)}>
