@@ -10,7 +10,7 @@ const userServices = {
 async function _add_user_by_email(email, pass){
     return new Promise(async (resolve, reject)=>{
         let crypted_pass= await cryptService.cryptify(pass)
-        console.log(crypted_pass)
+        // console.log(crypted_pass)
         
         User.create({
             user_email:email,

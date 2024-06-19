@@ -28,13 +28,13 @@ const productServices = {
   getProductNames: async (prod_data) => {
     try {
       const products = await Promise.all(prod_data.map(async prod => {
-        // console.log(prod.product_id)
+        // console.log(prod,"aha")
         let parent = await Product.findById(prod.product_id).catch(err=>console.log)
-        console.log(parent)
+        // console.log(parent,"here")
         if(!parent)
           throw new Error("Product not found")
         let child = parent.children.filter(child => child.SKU === prod.SKU)
-        return { ...child, quantity: prod.quantity, parent_name:parent.name }
+        return { ...child, quantity: prod.quantity, parent_name:parent.name, ...prod._doc }
       }))
       return products
     } catch (error) {

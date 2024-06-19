@@ -30,6 +30,7 @@ var OrderSchema = new mongoose.Schema(
         amount_total: { type: Number, required: true },
         due_amount: { type: Number, required: true },
         paid_amount: { type: Number, required: true },
+        sub_total: { type: Number },
         status: {
             type: String,
             enum: ['Processing', 'Completed', 'Cancelled', 'Refund Initiated', 'Refund Completed'],
