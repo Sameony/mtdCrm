@@ -17,7 +17,7 @@ interface Payment {
     sender_email?: string;
     institution_name?: string;
     finance_id?: string;
-    createdAt?:string;
+    createdAt?: string;
 }
 
 const PaymentLayout: React.FC = () => {
@@ -25,29 +25,31 @@ const PaymentLayout: React.FC = () => {
     const [existingPayments, setExistingPayments] = useState<Payment[]>([]);
     const [activeIndex, setActiveIndex] = useState<string | null>("");
     const [loading, setLoading] = useState<boolean>(false);
-    const [due_amount, setDue_amount] = useState<number| null>(null);
+    const [due_amount, setDue_amount] = useState<number | null>(null);
 
     let params = useParams()
     const navigate = useNavigate()
     const { id } = params;
 
-    useEffect(()=>{
+    useEffect(() => {
         getPaymentDetails();
-    },[])
+    }, [])
 
-    const getPaymentDetails = async () =>{
+    const getPaymentDetails = async () => {
         try {
             setLoading(true);
             const response = await orderApis.getPaymentById(id);
             if (response.data.status) {
-              setExistingPayments(response.data.data.payments);
-              setDue_amount(response.data.data.due_amount)
+                setExistingPayments(response.data.data.payments);
+                setDue_amount(response.data.data.due_amount)
+            } else {
+                toast.error(response?.data.err.toString() ?? "Something went wrong while fetching payments.");
             }
-          } catch (error: any) {
-            toast.error(error.response?.data.err.toString()??error.message.toString());
-          } finally {
+        } catch (error: any) {
+            toast.error(error.response?.data.err.toString() ?? error.message.toString());
+        } finally {
             setLoading(false);
-          }
+        }
     }
     const handlePaymentChange = (index: number, field: string, value: string | number) => {
         const newPayments = payments.map((payment, i) =>
@@ -84,7 +86,7 @@ const PaymentLayout: React.FC = () => {
                 toast.success(`Payment of amount ${res.data.data.amount} has been received for the order.`)
                 navigate("/orders")
             } else {
-                toast.error(res.data.err??"Something went wrong while registering payments.")
+                toast.error(res.data.err ?? "Something went wrong while registering payments.")
             }
             // console.log(res)
         } catch (error: any) {
@@ -94,22 +96,22 @@ const PaymentLayout: React.FC = () => {
         }
     }
     return (
-        loading?<Loading />:<div className='mx-8'>
+        loading ? <Loading /> : <div className='mx-8'>
             <div className="flex mb-4 justify-between items-center">
                 <Button className='' color={'gray'} onClick={() => navigate("/orders")}>
                     <span className='flex gap-2 items-center'><FaChevronLeft />Back</span>
                 </Button>
                 <p className='text-2xl font-semibold text-gray-500'>Transaction Record</p>
-                {due_amount?<p className='text-gray-400 font-semibold'>Amount Due:<span className='font-normal'>{due_amount}</span></p>:<p></p>}
+                {due_amount ? <p className='text-gray-400 font-semibold'>Amount Due:<span className='font-normal'>{due_amount}</span></p> : <p></p>}
             </div>
-            {existingPayments.length>0 && <p className='mb-2 mt-8 font-semibold text-gray-500'>Recorded Transactions:</p>}
-            {existingPayments.map((payment, index) => (
-                <div key={index+"_paid"} className="mb-4 border border-gray-300 rounded-md shadow-md">
+            {existingPayments?.length > 0 && <p className='mb-2 mt-8 font-semibold text-gray-500'>Recorded Transactions:</p>}
+            {existingPayments?.map((payment, index) => (
+                <div key={index + "_paid"} className="mb-4 border border-gray-300 rounded-md shadow-md">
                     <div className="flex flex-col bg-gray-50 p-4 rounded-t-md cursor-pointer" onClick={() => toggleAccordion(`${index}_paid`)}>
                         <h3 className="text-lg font-semibold">{payment.mode}</h3>
                         {/* <BsTrash3Fill onClick={() => removePayment(index)}
                             className="text-red-500 text-2xl" /> */}
-                        <h3 className="">{new Date(payment.createdAt??"").toDateString()??""}</h3>
+                        <h3 className="">{new Date(payment.createdAt ?? "").toDateString() ?? ""}</h3>
                     </div>
                     {activeIndex === `${index}_paid` && (
                         <div className="p-4">
@@ -123,7 +125,7 @@ const PaymentLayout: React.FC = () => {
 
                 </div>
             ))}
-            
+
             <p className='mb-2 mt-8 font-semibold text-gray-500'>Add New Transactions:</p>
             {payments.map((payment, index) => (
                 <div key={index} className="mb-4 border border-gray-300 rounded-md shadow-md">

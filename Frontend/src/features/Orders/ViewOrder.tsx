@@ -84,7 +84,7 @@ const ViewOrder: React.FC = () => {
             className="flex-1 px-3 py-2 border border-gray-300 min-w-32 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-200 w-full"
           />
           <label>
-            Status 
+            Status
             <select className='rounded-md text-gray-500 accent-gray-500' value={statusFilter} onChange={handleStatusChange}>
               <option value="">All</option>
               <option value="Processing">Processing</option>

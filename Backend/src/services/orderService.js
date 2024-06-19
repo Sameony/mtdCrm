@@ -87,7 +87,7 @@ const orderServices = {
                 return {payments, due_amount:order.due_amount}
             }
             else {
-                return []
+                return {payments:[], due_amount:order.due_amount}
             }
         } catch (error) {
             throw error;

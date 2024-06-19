@@ -52,7 +52,7 @@ interface Child {
   parent_id?: string;
 }
 
-const OrderForm= () => {
+const OrderForm = () => {
   const { id } = useParams<{ id: string }>(); // Get the ID from the URL parameters
   const [formState, setFormState] = useState<OrderFormState>({
     customer: '',
@@ -118,7 +118,7 @@ const OrderForm= () => {
   }, [formState.sub_total, formState.tax, formState.discount, formState.added_cost]);
 
   const calculateSubTotal = (selectedProducts: (Child & { quantity: number })[]) => {
-    if(id && formState.sub_total)
+    if (id && formState.sub_total)
       return formState.sub_total
     return selectedProducts.reduce((acc, curr) => {
       return Number(acc) + Number(curr.sale_price) * curr.quantity;
@@ -170,7 +170,7 @@ const OrderForm= () => {
           sub_total: order.sub_total ?? null,
         });
         setCustomerName(`${customer.firstname} ${customer.lastname}`);
-        
+
         // Pre-fill selected products with fetched products
         const preFilledProducts = products.map((prod: any) => {
           // console.log(prod)
@@ -250,7 +250,7 @@ const OrderForm= () => {
       const { ship_address, ...formdata } = formState;
       let data = {
         ...formdata,
-        ...(formState.ship_method !== "Store Pickup" ? {ship_address} : {}),
+        ...(formState.ship_method !== "Store Pickup" ? { ship_address } : {}),
         products: selectedProducts.map(item => {
           console.log(item)
           return {
@@ -421,6 +421,7 @@ const OrderForm= () => {
         <div className="mb-4 flex items-center">
           <label htmlFor="hasTax" className="block text-sm font-medium text-gray-700 mr-2">Add Tax:</label>
           <ToggleSwitch
+            color='indigo'
             id="hasTax"
             checked={hasTax}
             onChange={(checked) => setHasTax(checked)}
@@ -502,32 +503,38 @@ const OrderForm= () => {
             className=""
           />
         </div> : <></>}
-        {id?<div className="mb-4">
-                <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-2">Status:</label>
-                <select
-                    id="status"
-                    name="status"
-                    value={formState.status}
-                    onChange={handleInputChange}
-                    required
-                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                >
-                    <option value="Processing">Processing</option>
-                    <option value="Completed">Completed</option>
-                    <option value="Cancelled">Cancelled</option>
-                    <option value="Refund Initiated">Refund Initiated</option>
-                    <option value="Refund Completed">Refund Completed</option>
+        {id ? <div className="mb-4">
+          <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-2">Status:</label>
+          <select
+            id="status"
+            name="status"
+            value={formState.status}
+            onChange={handleInputChange}
+            required
+            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="Processing">Processing</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+            <option value="Refund Initiated">Refund Initiated</option>
+            <option value="Refund Completed">Refund Completed</option>
 
-                </select>
-            </div>:<></>}
+          </select>
+        </div> : <></>}
 
-        <button
-          type="submit"
-          onClick={handleSubmit}
-          className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700"
-        >
-          {id ? 'Update Order' : 'Create Order'}
-        </button>
+        <div className='flex justify-between gap-4 items-center'>
+          <button onClick={() => navigate(`/orders/${id}/payment`)} className=" cursor-pointer w-full bg-green-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring focus:ring-indigo-200">
+            Transaction Record
+          </button>
+          <button
+            type="submit"
+            onClick={handleSubmit}
+            className="w-full cursor-pointer bg-indigo-600 text-white p-2 rounded-md hover:bg-indigo-700"
+          >
+            {id ? 'Update Order' : 'Create Order'}
+          </button>
+
+        </div>
       </form>
     )
   );
