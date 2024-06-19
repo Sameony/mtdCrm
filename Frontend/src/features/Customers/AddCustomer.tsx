@@ -53,7 +53,7 @@ const AddCustomer: React.FC = () => {
     setLoading(true)
     try {
       let res = await customerApis.addCustomer(formState)
-      console.log(res)
+      // console.log(res)
       if (res.data.status) {
         toast.success("New customer added successfully")
         navigate("/customers")
@@ -63,7 +63,7 @@ const AddCustomer: React.FC = () => {
       }
     } catch (error: any) {
       toast.error(error.response.data.err)
-      console.log(error.response.data.err)
+      // console.log(error.response.data.err)
     } finally {
       setLoading(false)
     }

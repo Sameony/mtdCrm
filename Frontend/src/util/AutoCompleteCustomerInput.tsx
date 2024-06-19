@@ -24,7 +24,7 @@ const AutoCompleteCustomerInput: React.FC<{ value: string, onChange: (customerId
     try {
     //   setLoading(true);
       const response = await customerApis.getCustomers();
-      console.log(response)
+      // console.log(response)
       if (response.data.status) {
         setCustomers(response.data.data);
         setFilteredCustomers(response.data.data);

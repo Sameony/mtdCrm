@@ -81,7 +81,7 @@ const ViewOrder: React.FC = () => {
             placeholder="Search by customer email"
             value={search}
             onChange={handleSearchChange}
-            className="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-200 w-full"
+            className="flex-1 px-3 py-2 border border-gray-300 min-w-32 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-200 w-full"
           />
           <label>
             Status 
@@ -140,7 +140,7 @@ const ViewOrder: React.FC = () => {
                 <Table.Cell className="px-4 py-2 border-b border-gray-200">{order.order.ship_method}</Table.Cell>
                 <Table.Cell className="px-4 py-2 border-b border-gray-200">{order.order.status}</Table.Cell>
                 <Table.Cell className="px-4 py-2 border-b border-gray-200 ">
-                  <MdRemoveRedEye className='inline mx-2 cursor-pointer' title='View Order' />
+                  <MdRemoveRedEye className='inline mr-2 cursor-pointer' title='View Order' />
                   <MdEdit className='inline mx-2 cursor-pointer' title='Edit Order' onClick={() => handleEditOrder(order.order._id)} />
                 </Table.Cell>
               </Table.Row>

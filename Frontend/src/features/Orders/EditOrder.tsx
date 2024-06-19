@@ -346,7 +346,7 @@ const OrderForm: React.FC = () => {
                 />
             </div> */}
 
-            {/* <div className="mb-4">
+            <div className="mb-4">
                 <label htmlFor="tax" className="block text-sm font-medium text-gray-700 mb-2">Tax:</label>
                 <input
                     id="tax"
@@ -357,7 +357,7 @@ const OrderForm: React.FC = () => {
                     required
                     className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                 />
-            </div> */}
+            </div>
 
             <div className="flex items-center justify-between">
                 <div className="mb-4">

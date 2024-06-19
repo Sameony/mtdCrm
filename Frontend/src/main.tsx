@@ -15,7 +15,6 @@ import { ToastContainer } from 'react-toastify';
 import ViewOrder from './features/Orders/ViewOrder.tsx';
 import CreateOrder from './features/Orders/CreateOrder.tsx';
 import PaymentLayout from './features/Payments/PaymentLayout.tsx';
-import EditOrder from './features/Orders/EditOrder.tsx';
 import ViewProducts from './features/Products/ViewProducts.tsx';
 import ProductForm from './features/Products/AddProducts.tsx';
 
@@ -47,7 +46,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/orders/:id/edit",
-        element: <EditOrder />
+        element: <CreateOrder />
       },
       {
         path: "/orders/:id/payment",

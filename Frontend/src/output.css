@@ -1729,6 +1729,10 @@ input[type="range"]::-ms-fill-lower {
   min-width: 100%;
 }
 
+.min-w-32 {
+  min-width: 8rem;
+}
+
 .max-w-2xl {
   max-width: 42rem;
 }
@@ -4165,6 +4169,11 @@ input[type="range"]::-ms-fill-lower {
 .hover\:text-indigo-700:hover {
   --tw-text-opacity: 1;
   color: rgb(81 69 205 / var(--tw-text-opacity));
+}
+
+.hover\:text-red-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(200 30 30 / var(--tw-text-opacity));
 }
 
 .hover\:underline:hover {

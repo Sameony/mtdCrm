@@ -22,7 +22,7 @@ const Login = () => {
         try {
             let res = await authApis.postLogin(userDetails)
             if (res.data.status) {
-                console.log(res.data)
+                // console.log(res.data)
                 toast.success("Logged in successfully")
                 sessionStorage.setItem("user", res.data.data)
                 navigate("/")

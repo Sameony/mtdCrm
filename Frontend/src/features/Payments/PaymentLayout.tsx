@@ -25,6 +25,7 @@ const PaymentLayout: React.FC = () => {
     const [existingPayments, setExistingPayments] = useState<Payment[]>([]);
     const [activeIndex, setActiveIndex] = useState<string | null>("");
     const [loading, setLoading] = useState<boolean>(false);
+    const [due_amount, setDue_amount] = useState<number| null>(null);
 
     let params = useParams()
     const navigate = useNavigate()
@@ -39,7 +40,8 @@ const PaymentLayout: React.FC = () => {
             setLoading(true);
             const response = await orderApis.getPaymentById(id);
             if (response.data.status) {
-              setExistingPayments(response.data.data);
+              setExistingPayments(response.data.data.payments);
+              setDue_amount(response.data.data.due_amount)
             }
           } catch (error: any) {
             toast.error(error.response?.data.err.toString()??error.message.toString());
@@ -82,9 +84,9 @@ const PaymentLayout: React.FC = () => {
                 toast.success(`Payment of amount ${res.data.data.amount} has been received for the order.`)
                 navigate("/orders")
             } else {
-                toast.error("Something went wrong while registering payments.")
+                toast.error(res.data.err??"Something went wrong while registering payments.")
             }
-            console.log(res)
+            // console.log(res)
         } catch (error: any) {
             toast.error(error.response.data.err)
         } finally {
@@ -98,7 +100,7 @@ const PaymentLayout: React.FC = () => {
                     <span className='flex gap-2 items-center'><FaChevronLeft />Back</span>
                 </Button>
                 <p className='text-2xl font-semibold text-gray-500'>Transaction Record</p>
-                <p></p>
+                {due_amount?<p className='text-gray-400 font-semibold'>Amount Due:<span className='font-normal'>{due_amount}</span></p>:<p></p>}
             </div>
             {existingPayments.length>0 && <p className='mb-2 mt-8 font-semibold text-gray-500'>Recorded Transactions:</p>}
             {existingPayments.map((payment, index) => (

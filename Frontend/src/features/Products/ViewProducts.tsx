@@ -149,7 +149,7 @@ const ViewProducts: React.FC = () => {
                                 <p className="text-gray-600"><span className="font-medium">Cost Price:</span> <span className='font-thin'>${child.cost_price}</span></p>
                                 <p className="text-gray-600"><span className="font-medium">Product Size:</span> <span className='font-thin'>L: {child.product_size?.L}, W: {child.product_size?.W}, H: {child.product_size?.H}</span></p>
                                 <p className="text-gray-600"><span className="font-medium">Shipping Size:</span> <span className='font-thin'>L: {child.shipping_size?.L}, W: {child.shipping_size?.W}, H: {child.shipping_size?.H}</span></p>
-                                {child.weight&&<p className="text-gray-600"><span className="font-medium">Weight:</span> <span className='font-thin'>{child.weight} kg</span></p>}
+                                {child.weight?<p className="text-gray-600"><span className="font-medium">Weight:</span> <span className='font-thin'>{child.weight} kg</span></p>:<></>}
                                 <p className="text-gray-600"><span className="font-medium">Status:</span> <span className='font-thin'>{child.status}</span></p>
                             </div>
                             <div className="flex justify-end">
