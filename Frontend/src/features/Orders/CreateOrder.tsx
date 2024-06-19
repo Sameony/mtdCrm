@@ -81,8 +81,6 @@ const OrderForm: React.FC = () => {
   useEffect(() => {
     // handle amount change
     let amt = formState.sub_total
-    if (formState.added_cost)
-      amt = Number(amt) + Number(formState.added_cost)
     if (formState.tax)
       amt = Number(amt) + Number(formState.tax)
     if (formState.discount) {
@@ -93,7 +91,7 @@ const OrderForm: React.FC = () => {
   }, [formState.sub_total, formState.added_cost, formState.tax, formState.discount])
 
   useEffect(() => {
-    let amt = selectedProducts.reduce((acc, curr) => {
+    let amt:number = selectedProducts.reduce((acc, curr) => {
       acc = Number(acc) + Number(curr.sale_price * curr.quantity);
       return acc;
     }, 0)
@@ -101,12 +99,12 @@ const OrderForm: React.FC = () => {
   }, [selectedProducts])
 
   useEffect(() => {
-    let amt = 0
+    let amt:number = 0
     if (hasTax)
-      amt = Number(13 / 100) * formState.sub_total
-
+      amt += Number(13 / 100) * (formState.sub_total+Number(formState.added_cost))
+    
     setFormState({ ...formState, tax: amt })
-  }, [hasTax])
+  }, [hasTax, formState.sub_total, formState.added_cost])
 
 
   const handleProductChange = (product: Child & { parentName: string }) => {
@@ -237,6 +235,12 @@ const OrderForm: React.FC = () => {
                     </Table.Cell>
                   </Table.Row>
                 ))}
+                <Table.Row key={"sub_total"}>
+                    <Table.Cell>Total</Table.Cell>
+                    <Table.Cell />
+                    <Table.Cell>{formState.sub_total}</Table.Cell>
+                    <Table.Cell />
+                  </Table.Row>
               </Table.Body>
             </Table>
           </div>
@@ -346,7 +350,7 @@ const OrderForm: React.FC = () => {
 
         <div className="mb-4">
           <label htmlFor="tax" className="block text-sm font-medium text-gray-700 mb-3">{`${hasTax ? "Remove Tax" : "Add Tax"}`}</label>
-          <ToggleSwitch color='indigo' checked={hasTax} onChange={setHasTax} />
+          <ToggleSwitch color='indigo' checked={hasTax} onChange={setHasTax} label={`${hasTax ? "13% Tax added" : "No Tax Included"}`} />
         </div>
         <div className="mb-4">
           <label htmlFor="tax" className="block text-sm font-medium text-gray-700 mb-2">Tax amount:</label>

@@ -7,9 +7,9 @@ import Loading from '../../util/Loading';
 import { toast } from 'react-toastify';
 
 interface Size {
-    L: number;
-    W: number;
-    H: number;
+    L?: number;
+    W?: number;
+    H?: number;
 }
 
 interface Child {
@@ -19,9 +19,9 @@ interface Child {
     selling_price: number;
     sale_price: number;
     cost_price: number;
-    product_size: Size;
-    shipping_size: Size;
-    weight: number;
+    product_size?: Size;
+    shipping_size?: Size;
+    weight?: number;
     status: string;
 }
 
@@ -147,9 +147,9 @@ const ViewProducts: React.FC = () => {
                                 <p className="text-gray-600"><span className="font-medium">Selling Price:</span> <span className='font-thin'>${child.selling_price}</span></p>
                                 <p className="text-gray-600"><span className="font-medium">Sale Price:</span> <span className='font-thin'>${child.sale_price}</span></p>
                                 <p className="text-gray-600"><span className="font-medium">Cost Price:</span> <span className='font-thin'>${child.cost_price}</span></p>
-                                <p className="text-gray-600"><span className="font-medium">Product Size:</span> <span className='font-thin'>L: {child.product_size.L}, W: {child.product_size.W}, H: {child.product_size.H}</span></p>
-                                <p className="text-gray-600"><span className="font-medium">Shipping Size:</span> <span className='font-thin'>L: {child.shipping_size.L}, W: {child.shipping_size.W}, H: {child.shipping_size.H}</span></p>
-                                <p className="text-gray-600"><span className="font-medium">Weight:</span> <span className='font-thin'>{child.weight} kg</span></p>
+                                <p className="text-gray-600"><span className="font-medium">Product Size:</span> <span className='font-thin'>L: {child.product_size?.L}, W: {child.product_size?.W}, H: {child.product_size?.H}</span></p>
+                                <p className="text-gray-600"><span className="font-medium">Shipping Size:</span> <span className='font-thin'>L: {child.shipping_size?.L}, W: {child.shipping_size?.W}, H: {child.shipping_size?.H}</span></p>
+                                {child.weight&&<p className="text-gray-600"><span className="font-medium">Weight:</span> <span className='font-thin'>{child.weight} kg</span></p>}
                                 <p className="text-gray-600"><span className="font-medium">Status:</span> <span className='font-thin'>{child.status}</span></p>
                             </div>
                             <div className="flex justify-end">

@@ -20,9 +20,9 @@ interface Child {
     selling_price: number;
     sale_price: number;
     cost_price: number;
-    product_size: Size;
-    shipping_size: Size;
-    weight: number;
+    product_size?: Size;
+    shipping_size?: Size;
+    weight?: number;
     status: string;
 }
 
@@ -47,9 +47,6 @@ const ProductForm: React.FC = () => {
         selling_price: 0,
         sale_price: 0,
         cost_price: 0,
-        product_size: { L: 0, W: 0, H: 0 },
-        shipping_size: { L: 0, W: 0, H: 0 },
-        weight: 0,
         status: 'in stock'
     });
     const [loading, setLoading] = useState<boolean>(false);
@@ -78,14 +75,17 @@ const ProductForm: React.FC = () => {
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
+        let { name, value } = e.target;
+        if (typeof value === "string")
+            value = value.toUpperCase()
         setFormState({ ...formState, [name]: value });
     };
 
     const handleChildInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
+        let { name, value } = e.target;
         const [field, subfield] = name.split(".");
-
+        if (typeof value === "string" && name !== "status")
+            value = value.toUpperCase()
         if (subfield) {
             setChildState((prevState) => ({
                 ...prevState,
@@ -128,20 +128,14 @@ const ProductForm: React.FC = () => {
         e.preventDefault();
         setLoading(true)
         try {
-            let res: any;
-            if (id) {
-                res = await orderApis.updateProduct(id, formState);
-                toast.success("Product successfully updated.");
-            } else {
-                res = await orderApis.createProduct(formState);
-                toast.success("Product successfully created.");
-            }
+            let res = id ? await orderApis.updateProduct(id, formState) : await orderApis.createProduct(formState);
             if (res.data.status) {
                 navigate('/products');
+                id ? toast.success("Product successfully updated.") : toast.success("Product successfully created.");
             } else {
                 toast.error("Something went wrong. Please try again after some time.")
             }
-            
+
         } catch (error) {
             toast.error("Something went wrong.");
         } finally {
@@ -149,8 +143,9 @@ const ProductForm: React.FC = () => {
         }
     };
 
+    // console.log(formState)
     return (
-        loading?<Loading />:<form onSubmit={handleSubmit} className="max-w-3xl mx-auto bg-white p-8 shadow-md rounded-lg">
+        loading ? <Loading /> : <form onSubmit={handleSubmit} className="max-w-3xl mx-auto bg-white p-8 shadow-md rounded-lg">
             <div className='mb-6 flex items-center justify-between'>
                 <h2 className="text-2xl font-semibold ">{id ? "Edit Product" : "Add Product"}</h2>
                 <Button color='gray' onClick={() => navigate(-1)}>
@@ -169,7 +164,7 @@ const ProductForm: React.FC = () => {
                 />
             </div>
 
-            <div className="mb-4">
+            {/* <div className="mb-4">
                 <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">Category:</label>
                 <TextInput
                     id="category"
@@ -178,6 +173,23 @@ const ProductForm: React.FC = () => {
                     onChange={handleInputChange}
                     required={formState.children.length < 1}
                 />
+            </div> */}
+            <div className="mb-4">
+                <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">Category:</label>
+                <select
+                    id="category"
+                    name="category"
+                    value={formState.category}
+                    onChange={handleInputChange}
+                    required
+                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-200"
+                >
+                    <option value="">Select a category</option>
+                    <option value="SOFA">SOFA</option>
+                    <option value="MATTRESS">MATTRESS</option>
+                    <option value="CABINET">CABINET</option>
+                    <option value="BEDSHEET">BEDSHEET</option>
+                </select>
             </div>
 
             <div className="mb-4">
@@ -267,9 +279,9 @@ const ProductForm: React.FC = () => {
                         name="product_size.L"
                         type="number"
                         min={0}
-                        value={childState.product_size.L}
+                        value={childState.product_size?.L}
                         onChange={handleChildInputChange}
-                        required={formState.children.length < 1}
+
                     />
                 </div>
                 <div>
@@ -279,9 +291,9 @@ const ProductForm: React.FC = () => {
                         name="product_size.W"
                         type="number"
                         min={0}
-                        value={childState.product_size.W}
+                        value={childState.product_size?.W}
                         onChange={handleChildInputChange}
-                        required={formState.children.length < 1}
+
                     />
                 </div>
                 <div>
@@ -291,9 +303,9 @@ const ProductForm: React.FC = () => {
                         name="product_size.H"
                         type="number"
                         min={0}
-                        value={childState.product_size.H}
+                        value={childState.product_size?.H}
                         onChange={handleChildInputChange}
-                        required={formState.children.length < 1}
+
                     />
                 </div>
                 <div>
@@ -303,9 +315,9 @@ const ProductForm: React.FC = () => {
                         name="shipping_size.L"
                         type="number"
                         min={0}
-                        value={childState.shipping_size.L}
+                        value={childState.shipping_size?.L}
                         onChange={handleChildInputChange}
-                        required={formState.children.length < 1}
+
                     />
                 </div>
                 <div>
@@ -315,9 +327,9 @@ const ProductForm: React.FC = () => {
                         name="shipping_size.W"
                         type="number"
                         min={0}
-                        value={childState.shipping_size.W}
+                        value={childState.shipping_size?.W}
                         onChange={handleChildInputChange}
-                        required={formState.children.length < 1}
+
                     />
                 </div>
                 <div>
@@ -327,9 +339,9 @@ const ProductForm: React.FC = () => {
                         name="shipping_size.H"
                         type="number"
                         min={0}
-                        value={childState.shipping_size.H}
+                        value={childState.shipping_size?.H}
                         onChange={handleChildInputChange}
-                        required={formState.children.length < 1}
+
                     />
                 </div>
 
@@ -342,7 +354,7 @@ const ProductForm: React.FC = () => {
                         min={0}
                         value={childState.weight}
                         onChange={handleChildInputChange}
-                        required={formState.children.length < 1}
+
                     />
                 </div>
                 <div>

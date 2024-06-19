@@ -16,7 +16,7 @@ const CustomerSchema = new mongoose.Schema(
         address: { type: addressSchema },
         firstname: { type: String, required: true, trim: true },
         lastname: { type: String, required: true, trim: true },
-        phone: { type: Number, required: true },
+        phone: { type: Number, required: true, unique:true },
         cart: [cartItemSchema]
     },
     {

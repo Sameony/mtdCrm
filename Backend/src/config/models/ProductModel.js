@@ -3,9 +3,9 @@ const { Schema } = mongoose;
 
 // Define sizeSchema
 const sizeSchema = new Schema({
-  L: { type: Number, required: true },
-  W: { type: Number, required: true },
-  H: { type: Number, required: true }
+  L: { type: Number },
+  W: { type: Number },
+  H: { type: Number }
 });
 
 // Define childSchema
@@ -16,9 +16,9 @@ const childSchema = new Schema({
   selling_price: { type: Number, required: true },
   sale_price: { type: Number, required: true },
   cost_price: { type: Number, required: true },
-  product_size: { type: sizeSchema, required: true },
-  shipping_size: { type: sizeSchema, required: true },
-  weight: { type: Number, required: true },
+  product_size: { type: sizeSchema },
+  shipping_size: { type: sizeSchema },
+  weight: { type: Number },
   status: {
     type: String,
     enum: ['in stock', 'out of stock', 'discontinued'],

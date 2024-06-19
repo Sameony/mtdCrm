@@ -6,6 +6,7 @@ interface Customer {
   _id: string;
   firstname: string;
   lastname: string;
+  phone: number;
 }
 
 const AutoCompleteCustomerInput: React.FC<{ value: string, onChange: (customerId: string, customerName: string) => void }> = ({ value, onChange }) => {
@@ -23,6 +24,7 @@ const AutoCompleteCustomerInput: React.FC<{ value: string, onChange: (customerId
     try {
     //   setLoading(true);
       const response = await customerApis.getCustomers();
+      console.log(response)
       if (response.data.status) {
         setCustomers(response.data.data);
         setFilteredCustomers(response.data.data);
@@ -55,7 +57,9 @@ const AutoCompleteCustomerInput: React.FC<{ value: string, onChange: (customerId
 
     const filtered = customers.filter(customer =>
       customer.firstname.toLowerCase().includes(query) ||
-      customer.lastname.toLowerCase().includes(query)
+      customer.lastname.toLowerCase().includes(query) ||
+      customer.phone.toString().includes(query)
+      // customer.
     );
     setFilteredCustomers(filtered);
   };
@@ -72,7 +76,7 @@ const AutoCompleteCustomerInput: React.FC<{ value: string, onChange: (customerId
         value={value}
         onChange={handleInputChange}
         onFocus={() => setShowDropdown(true)}
-        placeholder="Type to search customer"
+        placeholder="Search by name or phone"
         className=" w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-200"
       />
       {showDropdown && filteredCustomers.length > 0 && (
