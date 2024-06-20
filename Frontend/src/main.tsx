@@ -17,6 +17,8 @@ import CreateOrder from './features/Orders/CreateOrder.tsx';
 import PaymentLayout from './features/Payments/PaymentLayout.tsx';
 import ViewProducts from './features/Products/ViewProducts.tsx';
 import ProductForm from './features/Products/AddProducts.tsx';
+import AddSupplier from './features/Supplier/AddSupplier.tsx';
+import ViewSupplier from './features/Supplier/ViewSupplier.tsx';
 
 
 const router = createBrowserRouter([
@@ -53,19 +55,31 @@ const router = createBrowserRouter([
         element: <PaymentLayout />
       },
       {
-        path:"/products",
+        path: "/products",
         element: <ViewProducts />
       },
       {
-        path:"/products/add",
+        path: "/products/add",
         element: <ProductForm />
       },
       {
-        path:"/products/:id/edit",
+        path: "/products/:id/edit",
         element: <ProductForm />
       },
-      
-      
+      {
+        path: "/supplier",
+        element: <ViewSupplier />
+      },
+      {
+        path: "/supplier/add",
+        element: <AddSupplier />
+      },
+      {
+        path: "/supplier/:id/edit",
+        element: <AddSupplier />
+      },
+
+
       // Add other routes that should include the sidebar here
     ],
   },
@@ -87,6 +101,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       rtl={false}
       pauseOnFocusLoss
       draggable
-      pauseOnHover/>
+      pauseOnHover />
   </React.StrictMode>,
 )

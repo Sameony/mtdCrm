@@ -1,0 +1,32 @@
+// models/ImportCompany.js
+
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const SupplierSchema = new Schema({
+    name: {
+        type: String,
+        required: true,
+    },
+    phoneNumber1: {
+        type: String,
+        required: true,
+    },
+    phoneNumber2: {
+        type: String,
+    },
+    emailID: {
+        type: String,
+        required: true,
+    },
+    pickupLocation: {
+        type: String,
+        required: true,
+    },
+    pickupGoogleMapLink: {
+        type: String,
+        required: true,
+    },
+});
+const Supplier = mongoose.model('Suppliers', SupplierSchema);
+module.exports = Supplier

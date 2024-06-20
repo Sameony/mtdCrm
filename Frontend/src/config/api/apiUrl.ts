@@ -1,5 +1,5 @@
-const base = "https://mtd-crm.vercel.app"
-// const base = "http://localhost:3000"
+// const base = "https://mtd-crm.vercel.app"
+const base = "http://localhost:3000"
 
 export const apiUrl = {
     login :`${base}/loginUser`,
@@ -18,8 +18,11 @@ export const apiUrl = {
     updateProduct:`${base}/updateProductById`,
 
     getPaymentByID:`${base}/getPaymentByOrderId`,
-    addPaymentToOrder:`${base}/addPaymentToOrderId`
+    addPaymentToOrder:`${base}/addPaymentToOrderId`,
     
+    getSupplier:`${base}/suppliers`,
+    createSupplier:`${base}/suppliers`,
+    updateSupplier:`${base}/updateSupplierById`,
 
     
 

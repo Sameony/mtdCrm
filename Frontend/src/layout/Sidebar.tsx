@@ -1,11 +1,12 @@
 import { Sidebar } from "flowbite-react";
 import { BiBuoy } from "react-icons/bi";
 import { BsFillClipboard2CheckFill } from "react-icons/bs";
+import { FaShop } from "react-icons/fa6";
 import { HiChartPie, HiOutlineMinusSm, HiOutlinePlusSm, HiShoppingBag, HiUser } from "react-icons/hi";
 import { twMerge } from "tailwind-merge";
 
-const NavSideBar = ({isSidebarOpen}:any) => {
-    
+const NavSideBar = ({ isSidebarOpen }: any) => {
+
     return (
         <Sidebar aria-label="Sidebar" className={`${isSidebarOpen ? "" : "hidden"} h-[calc(100vh-4rem)] overflow-hidden w-screen sm:w-[18rem] sm:overflow-auto`}>
             {/* <div className="flex justify-end sm:hidden">
@@ -29,7 +30,7 @@ const NavSideBar = ({isSidebarOpen}:any) => {
                     >
                         <Sidebar.Item href="/products/">View Products</Sidebar.Item>
                         <Sidebar.Item href="/products/add">Add Products</Sidebar.Item>
-                      
+
                     </Sidebar.Collapse>
                     <Sidebar.Collapse
                         icon={BsFillClipboard2CheckFill}
@@ -45,16 +46,29 @@ const NavSideBar = ({isSidebarOpen}:any) => {
                         <Sidebar.Item href="#">Refunds</Sidebar.Item>
                         <Sidebar.Item href="#">Shipping</Sidebar.Item>
                     </Sidebar.Collapse>
-                   
-                    <Sidebar.Collapse href="#" icon={HiUser} label="Customers"
-                     renderChevronIcon={(theme, open) => {
+
+                    <Sidebar.Collapse icon={HiUser} label="Customers"
+                        renderChevronIcon={(theme, open) => {
                             const IconComponent = open ? HiOutlineMinusSm : HiOutlinePlusSm;
 
                             return <IconComponent aria-hidden className={twMerge(theme.label.icon.open[open ? 'on' : 'off'])} />;
                         }}>
-                        
+
                         <Sidebar.Item href="/customers">View Customers</Sidebar.Item>
                         <Sidebar.Item href="/customers/add">Add Customers</Sidebar.Item>
+                    </Sidebar.Collapse>
+
+                    <Sidebar.Collapse
+                        icon={FaShop}
+                        label="Supplier"
+                        renderChevronIcon={(theme, open) => {
+                            const IconComponent = open ? HiOutlineMinusSm : HiOutlinePlusSm;
+
+                            return <IconComponent aria-hidden className={twMerge(theme.label.icon.open[open ? 'on' : 'off'])} />;
+                        }}
+                    >
+                        <Sidebar.Item href="/supplier/">View Suppliers</Sidebar.Item>
+                        <Sidebar.Item href="/supplier/add">Add Supplier</Sidebar.Item>
                     </Sidebar.Collapse>
                 </Sidebar.ItemGroup>
                 <Sidebar.ItemGroup>
