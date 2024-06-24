@@ -6,7 +6,13 @@ const sizeSchema = new Schema({
   L: { type: Number },
   W: { type: Number },
   H: { type: Number }
-});
+}, { _id: false });
+
+const SupplierSchema = new Schema({
+  supplier_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Customers', default: "66747baf5c2cbb820be6fd31" },
+  name: { type: String, default:"MEGA IMPORTS BRAMPTON" },
+}, { _id: false });
+
 
 // Define childSchema
 const childSchema = new Schema({
@@ -32,7 +38,8 @@ const productSchema = new Schema(
     name: { type: String, required: true, trim: true },
     category: { type: String, required: true, trim: true },
     ID: { type: String, required: true, trim: true, unique: true },
-    children: [childSchema]
+    children: [childSchema],
+    supplier: { type: SupplierSchema, required: false },
   },
   {
     timestamps: true

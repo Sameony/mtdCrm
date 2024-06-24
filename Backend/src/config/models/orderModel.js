@@ -22,7 +22,7 @@ var OrderSchema = new mongoose.Schema(
             enum: ['MTD Shipping', 'Store Pickup'],
             required: true
         },
-        ship_address: { type: addressSchema},
+        ship_address: { type: addressSchema },
         comment: { type: String },
         added_cost: { type: Number, default: 0 },
         discount: { type: Number, default: 0 },
@@ -33,10 +33,11 @@ var OrderSchema = new mongoose.Schema(
         sub_total: { type: Number },
         status: {
             type: String,
-            enum: ['Processing', 'Completed', 'Cancelled', 'Refund Initiated', 'Refund Completed'],
+            enum: ['Processing', 'Completed', 'Cancelled', 'Refund Initiated', 'Refund Completed', 'Partially Completed'],
             required: true
         },
         payments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Payments' }],
+        expected_delivery: { type: Date, required: true }
     },
     {
         timestamps: true

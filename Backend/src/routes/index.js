@@ -35,6 +35,10 @@ router.post("/suppliers", jsonParser, SupplierController.addSupplier);
 router.get("/suppliers/:id", jsonParser, SupplierController.getSupplierById);
 router.get("/suppliers", jsonParser, SupplierController.getAllSuppliers);
 router.post("/updateSupplierById/:id", jsonParser, SupplierController.updateSupplier);
+router.post("/supplyOrders", jsonParser, SupplierController.addSupplierOrder);
+router.get("/supplyOrders/:id", jsonParser, SupplierController.getSupplierOrderById);
+router.get("/supplyOrders", jsonParser, SupplierController.getAllSupplierOrders);
+// router.post("/updateSupplierById/:id", jsonParser, SupplierController.orde);
 
 
 
