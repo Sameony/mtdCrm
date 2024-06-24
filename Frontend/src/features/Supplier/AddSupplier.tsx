@@ -62,7 +62,9 @@ const SupplierForm: React.FC = () => {
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    const { name, value } = e.target;
+    let { name, value } = e.target;
+    if(name==="name")
+        value = value?.toLocaleUpperCase()
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
@@ -104,6 +106,7 @@ const SupplierForm: React.FC = () => {
               {field.label}:
             </label>
             <input
+            
               type={field.type}
               id={field.name}
               name={field.name}

@@ -19,6 +19,7 @@ import ViewProducts from './features/Products/ViewProducts.tsx';
 import ProductForm from './features/Products/AddProducts.tsx';
 import AddSupplier from './features/Supplier/AddSupplier.tsx';
 import ViewSupplier from './features/Supplier/ViewSupplier.tsx';
+import SupplierOrders from './features/Supplier/SupplierOrders.tsx';
 
 
 const router = createBrowserRouter([
@@ -77,6 +78,10 @@ const router = createBrowserRouter([
       {
         path: "/supplier/:id/edit",
         element: <AddSupplier />
+      },
+      {
+        path: "/supplier/orders",
+        element: <SupplierOrders />
       },
 
 

@@ -1,0 +1,93 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { supplierApis } from '../config/supplierApi';
+import { toast } from 'react-toastify';
+
+interface Supplier {
+  supplier_id: string;
+  name: string;
+}
+
+interface AutocompleteSupplierProps {
+  onSelect: (supplier: Supplier) => void;
+  value: Supplier | null;
+}
+
+const AutocompleteSupplier: React.FC<AutocompleteSupplierProps> = ({ onSelect, value }) => {
+  const [query, setQuery] = useState<string>(value ? value.name : '');
+  const [filteredSuppliers, setFilteredSuppliers] = useState<Supplier[]>([]);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const fetchSuppliers = async () => {
+        try {
+            const response = await supplierApis.getAllSuppliers();
+            if (!response.data.status)
+                toast.error(response.data.err ?? "Something went wrong while fetching list of suppliers")
+            else {
+                const data = response.data.data
+                setFilteredSuppliers(data);
+            }
+        } catch (error) {
+            console.error('Error fetching suppliers:', error);
+        }
+    };
+    fetchSuppliers();
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
+    setIsOpen(true);
+
+    const filtered = filteredSuppliers.filter((supplier) =>
+      supplier.name.toLowerCase().includes(event.target.value.toLowerCase())
+    );
+    setFilteredSuppliers(filtered);
+  };
+
+  const handleSelect = (supplier: Supplier) => {
+    setQuery(supplier.name);
+    setIsOpen(false);
+    onSelect(supplier);
+  };
+
+  return (
+    <div className="relative" ref={dropdownRef}>
+      <input
+        type="text"
+        className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-200"
+        value={query}
+        onChange={handleInputChange}
+        onClick={() => setIsOpen(true)}
+      />
+      {isOpen && filteredSuppliers.length > 0 && (
+        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+          {filteredSuppliers.map((supplier) => (
+            <div
+              key={supplier.supplier_id}
+              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+              onClick={() => handleSelect(supplier)}
+            >
+              {supplier.name}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default AutocompleteSupplier;

@@ -13,9 +13,13 @@ const updateSupplier = async (param:any,body:any) => {
 const createSupplier = async (body:any) => {
     return await axios.post(apiUrl.createSupplier, body)
 }
+const getAllSupplierOrders= async () => {
+    return await axios.get(apiUrl.getAllSupplierOrders);  
+}
 export const supplierApis = {
     getAllSuppliers,
     getSupplierById,
     updateSupplier,
-    createSupplier
+    createSupplier,
+    getAllSupplierOrders
 }

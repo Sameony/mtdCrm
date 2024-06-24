@@ -69,6 +69,7 @@ const NavSideBar = ({ isSidebarOpen }: any) => {
                     >
                         <Sidebar.Item href="/supplier/">View Suppliers</Sidebar.Item>
                         <Sidebar.Item href="/supplier/add">Add Supplier</Sidebar.Item>
+                        <Sidebar.Item href="/supplier/orders">View Supplier Orders</Sidebar.Item>
                     </Sidebar.Collapse>
                 </Sidebar.ItemGroup>
                 <Sidebar.ItemGroup>

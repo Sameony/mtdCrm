@@ -92,6 +92,7 @@ const ViewOrder: React.FC = () => {
               <option value="Cancelled">Cancelled</option>
               <option value="Refund Initiated">Refund Initiated</option>
               <option value="Refund Completed">Refund Completed</option>
+              <option value="Partially Completed">Partially Completed</option>
             </select>
           </label>
         </div>

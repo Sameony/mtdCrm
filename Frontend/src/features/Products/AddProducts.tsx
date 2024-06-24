@@ -6,7 +6,7 @@ import { MdDelete } from 'react-icons/md';
 import { FaChevronLeft } from 'react-icons/fa';
 import { orderApis } from '../../config/orderApi';  // Adjust the import path according to your project structure
 import Loading from '../../util/Loading';
-
+import AutocompleteSupplier from '../../util/AutoCompleteSupplier';
 interface Size {
     L: number;
     W: number;
@@ -26,11 +26,17 @@ interface Child {
     status: string;
 }
 
+interface Supplier {
+    supplier_id: string;
+    name: string;
+}
+
 interface ProductFormState {
     name: string;
     category: string;
     ID: string;
     children: Child[];
+    supplier?: Supplier;
 }
 
 const ProductForm: React.FC = () => {
@@ -38,7 +44,8 @@ const ProductForm: React.FC = () => {
         name: '',
         category: '',
         ID: '',
-        children: []
+        children: [],
+        supplier: undefined
     });
     const [childState, setChildState] = useState<Child>({
         SKU: '',
@@ -61,7 +68,7 @@ const ProductForm: React.FC = () => {
     }, [id]);
 
     const fetchProductDetails = async (productId: string) => {
-        setLoading(true)
+        setLoading(true);
         try {
             const response = await orderApis.getProductById(productId);
             if (response.data.status) {
@@ -70,14 +77,14 @@ const ProductForm: React.FC = () => {
         } catch (error: any) {
             toast.error(error.response.data.err);
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         let { name, value } = e.target;
         if (typeof value === "string")
-            value = value.toUpperCase()
+            value = value.toUpperCase();
         setFormState({ ...formState, [name]: value });
     };
 
@@ -85,7 +92,7 @@ const ProductForm: React.FC = () => {
         let { name, value } = e.target;
         const [field, subfield] = name.split(".");
         if (typeof value === "string" && name !== "status")
-            value = value.toUpperCase()
+            value = value.toUpperCase();
         if (subfield) {
             setChildState((prevState) => ({
                 ...prevState,
@@ -102,7 +109,12 @@ const ProductForm: React.FC = () => {
         }
     };
 
-
+    const handleSupplierSelect = (supplier: Supplier) => {
+        setFormState((prevState) => ({
+            ...prevState,
+            supplier: supplier
+        }));
+    };
 
     const addChild = () => {
         setFormState({ ...formState, children: [...formState.children, childState] });
@@ -126,24 +138,23 @@ const ProductForm: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setLoading(true)
+        setLoading(true);
         try {
             let res = id ? await orderApis.updateProduct(id, formState) : await orderApis.createProduct(formState);
             if (res.data.status) {
                 navigate('/products');
                 id ? toast.success("Product successfully updated.") : toast.success("Product successfully created.");
             } else {
-                toast.error("Something went wrong. Please try again after some time.")
+                toast.error("Something went wrong. Please try again after some time.");
             }
 
         } catch (error) {
             toast.error("Something went wrong.");
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
     };
 
-    // console.log(formState)
     return (
         loading ? <Loading /> : <form onSubmit={handleSubmit} className="max-w-3xl mx-auto bg-white p-8 shadow-md rounded-lg">
             <div className='mb-6 flex items-center justify-between'>
@@ -164,7 +175,7 @@ const ProductForm: React.FC = () => {
                 />
             </div>
 
-            {/* <div className="mb-4">
+            <div className="mb-4">
                 <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">Category:</label>
                 <TextInput
                     id="category"
@@ -173,23 +184,6 @@ const ProductForm: React.FC = () => {
                     onChange={handleInputChange}
                     required={formState.children.length < 1}
                 />
-            </div> */}
-            <div className="mb-4">
-                <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">Category:</label>
-                <select
-                    id="category"
-                    name="category"
-                    value={formState.category}
-                    onChange={handleInputChange}
-                    required
-                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-200"
-                >
-                    <option value="">Select a category</option>
-                    <option value="SOFA">SOFA</option>
-                    <option value="MATTRESS">MATTRESS</option>
-                    <option value="CABINET">CABINET</option>
-                    <option value="BEDSHEET">BEDSHEET</option>
-                </select>
             </div>
 
             <div className="mb-4">
@@ -203,7 +197,12 @@ const ProductForm: React.FC = () => {
                 />
             </div>
 
-            <h3 className="text-xl font-semibold mb-4">Children</h3>
+            <div className="mb-4">
+                <label htmlFor="supplier" className="block text-sm font-medium text-gray-700 mb-2">Supplier:</label>
+                <AutocompleteSupplier onSelect={handleSupplierSelect} value={formState.supplier || null} />
+            </div>
+
+            <hr className='my-6' />
 
             <div className="mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -217,7 +216,7 @@ const ProductForm: React.FC = () => {
                     />
                 </div>
                 <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">Child Name:</label>
+                    <label htmlFor="child_name" className="block text-sm font-medium text-gray-700 mb-2">Child Name:</label>
                     <TextInput
                         id="child_name"
                         name="name"
@@ -412,9 +411,10 @@ const ProductForm: React.FC = () => {
             </Table>
 
             <div className="flex justify-end">
-                <Button type="submit">
+                <button  className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-200 flex items-center"
+                 type="submit">
                     {id ? "Update Product" : "Create Product"}
-                </Button>
+                </button>
             </div>
         </form>
     );

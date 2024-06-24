@@ -155,7 +155,7 @@ const ViewProducts: React.FC = () => {
                             <div className="flex justify-end">
                                 <button 
                                     onClick={() => handleEdit(product._id)} 
-                                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200 flex items-center"
+                                    className="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition duration-200 flex items-center"
                                 >
                                     <MdEdit className="mr-2" /> Edit
                                 </button>

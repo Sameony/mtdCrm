@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { Button, Table, TextInput, ToggleSwitch } from 'flowbite-react';
+import { Button, Datepicker, Table, TextInput, ToggleSwitch } from 'flowbite-react';
 import AutoCompleteCustomerInput from '../../util/AutoCompleteCustomerInput';
 import { orderApis } from '../../config/orderApi';
 import { MdDelete } from 'react-icons/md';
@@ -28,6 +28,7 @@ interface OrderFormState {
   paid_amount: number;
   status: string;
   sub_total: number;
+  expected_delivery: Date;
 }
 
 interface Size {
@@ -71,6 +72,7 @@ const OrderForm = () => {
     paid_amount: 0,
     sub_total: 0,
     status: 'Processing',
+    expected_delivery: new Date()
   });
   const [selectedProducts, setSelectedProducts] = useState<(Child & { quantity: number })[]>([]);
   const [inputValue, setInputValue] = useState('');
@@ -168,6 +170,7 @@ const OrderForm = () => {
           paid_amount: order.paid_amount,
           status: order.status,
           sub_total: order.sub_total ?? null,
+          expected_delivery: order.expected_delivery
         });
         setCustomerName(`${customer.firstname} ${customer.lastname}`);
 
@@ -191,6 +194,8 @@ const OrderForm = () => {
   };
 
   const handleQuantityChange = (SKU: string, quantity: number) => {
+    if(quantity<1)
+      quantity=1
     setSelectedProducts(selectedProducts.map(product =>
       product.SKU === SKU ? { ...product, quantity } : product
     ));
@@ -490,7 +495,10 @@ const OrderForm = () => {
           />
         </div>
 
-
+        <div className='mb-4'>
+          <label htmlFor="due_amount" className="block text-sm font-medium text-gray-700 mb-2">Expected Delivery Date:</label>
+          <Datepicker minDate={new Date()} onSelectedDateChanged={(date)=>setFormState(prev=>({...prev,expected_delivery:date }))} />
+        </div>
 
         {id !== undefined ? <div className="mb-4">
           <label htmlFor="due_amount" className="block text-sm font-medium text-gray-700 mb-2">Due Amount:</label>
@@ -518,14 +526,15 @@ const OrderForm = () => {
             <option value="Cancelled">Cancelled</option>
             <option value="Refund Initiated">Refund Initiated</option>
             <option value="Refund Completed">Refund Completed</option>
+            <option value="Partially Completed">Partially Completed</option>
 
           </select>
         </div> : <></>}
 
         <div className='flex justify-between gap-4 items-center'>
-          <button onClick={() => navigate(`/orders/${id}/payment`)} className=" cursor-pointer w-full bg-green-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring focus:ring-indigo-200">
+          {id ? <button onClick={() => navigate(`/orders/${id}/payment`)} className=" cursor-pointer w-full bg-green-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring focus:ring-indigo-200">
             Transaction Record
-          </button>
+          </button> : <></>}
           <button
             type="submit"
             onClick={handleSubmit}
