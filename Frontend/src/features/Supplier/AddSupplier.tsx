@@ -88,7 +88,7 @@ const SupplierForm: React.FC = () => {
         toast.success("Successfully" + id ? " updated" : " added" + "the supplier.")
         navigate('/supplier');
       } else {
-        toast.error(response.data.err ?? "Something went wrong")
+        toast.error("Something went wrong")
       }
     } catch (error: any) {
       console.error('Error:', error);

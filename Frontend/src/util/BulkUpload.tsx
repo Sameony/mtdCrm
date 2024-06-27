@@ -37,8 +37,7 @@ const BulkUpload = (props: any) => {
                     props.isSupplier?navigate("/supplier"):navigate("/products")
                 }
                 else{
-                    toast.error(response.data.err ?? "Something went wrong while uploading file.")
-                    console.log("error at api")
+                    toast.error("Something went wrong while uploading file.")
                 }
             } catch (error) {
                 console.error('Error uploading file:', error);
