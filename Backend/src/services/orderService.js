@@ -20,12 +20,14 @@ const orderServices = {
 
             // Create a map to store suppliers and their respective products
             const supplierMap = new Map();
-
+            console.log("here")
             // Iterate through each product to organize by supplier
             for (const productRef of products) {
-                const product = await Product.findById(productRef.product_id).session(session);
+                console.log(productRef)
+                const product = await Product.findById(productRef.product_id).populate("supplier").session(session);
+                console.log(product)
                 if (product && product.supplier) {
-                    const supplierID = product.supplier.supplier_id.toString(); // Ensure string comparison
+                    const supplierID = product.supplier.supplier_id?.toString(); // Ensure string comparison
                     if (!supplierMap.has(supplierID)) {
                         supplierMap.set(supplierID, { name: product.supplier.name, products: [] });
                     }

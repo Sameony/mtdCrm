@@ -1,12 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { supplierApis } from '../config/supplierApi';
 import { toast } from 'react-toastify';
-
-interface Supplier {
-  supplier_id: string;
-  _id?:string;
-  name: string;
-}
+import { Supplier } from '../config/models/supplier';
 
 interface AutocompleteSupplierProps {
   onSelect: (supplier: Supplier) => void;
@@ -28,9 +23,9 @@ const AutocompleteSupplier: React.FC<AutocompleteSupplierProps> = ({ onSelect, v
           toast.error(response.data.err ?? "Something went wrong while fetching list of suppliers")
         else {
           const data = response.data.data
-          // console.log(data)
-          setSuppliers(data.filter((item: any) => item.category !== "Location"))
-          setFilteredSuppliers(data.filter((item: any) => item.category !== "Location"));
+          console.log(data)
+          setSuppliers(data.map((item:Supplier)=>{return {...item, supplier_id:item._id}}).filter((item: any) => item.category !== "Location"))
+          setFilteredSuppliers(data.map((item:Supplier)=>{return {...item, supplier_id:item._id}}).filter((item: any) => item.category !== "Location"));
         }
       } catch (error) {
         console.error('Error fetching suppliers:', error);

@@ -6,4 +6,5 @@ export interface Supplier {
     emailID: string;
     pickupLocation: string;
     pickupGoogleMapLink: string;
+    supplier_id?:string;
   }

@@ -11,6 +11,7 @@ import { FaChevronRight, FaPencil } from 'react-icons/fa6';
 import { Child } from '../../config/models/Child';
 import { apiUrl } from '../../config/api/apiUrl';
 import BulkUpload from '../../util/BulkUpload';
+import { Supplier } from '../../config/models/supplier';
 
 interface Size {
     L: number;
@@ -18,11 +19,6 @@ interface Size {
     H: number;
 }
 
-interface Supplier {
-    supplier_id: string;
-    name: string;
-    _id?:string;
-}
 
 interface ProductFormState {
     name: string;
@@ -136,7 +132,7 @@ const ProductForm: React.FC = () => {
             supplier: supplier
         }));
     };
-
+    console.log(formState.supplier)
     const addChild = () => {
         if (!childState.SKU || !childState.color || !childState.cost_price || !childState.name || !childState.sale_price || !childState.selling_price) {
             toast.info("Please fill the required fields before adding")
