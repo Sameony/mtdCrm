@@ -8,7 +8,9 @@ var db = require("./config/db")
 
 
 app.set('port', process.env.port || 3000)
+app.use('/uploads', express.static('uploads'));
 app.use(cors())
+// app.use(express.json());
 app.get('/', (req, res) => {
   res.status(200).send('Hello World!')
 })

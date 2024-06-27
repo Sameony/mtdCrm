@@ -1,6 +1,5 @@
 const Supplier = require("../config/models/supplierModel");
-const SupplierOrder = require("../config/models/supplierOrderModel");
-const SupplierOrders = require("../config/models/supplierOrderModel")
+const SupplierOrders = require("../config/models/supplierOrderModel");
 
 const supplierServices = {
     addSupplier: async (supplierData) => {
@@ -57,7 +56,7 @@ const supplierServices = {
     getAllSupplierOrders: async () => {
         try {
             console.log("HI");
-            const supplierOrders = await SupplierOrder.find()
+            const supplierOrders = await SupplierOrders.find()
                 .populate('supplierID')
                 .populate({
                     path: 'orderID',
@@ -65,7 +64,7 @@ const supplierServices = {
                         path: 'products.product_id',
                     },
                 });
-            console.log(supplierOrders);
+            // console.log(supplierOrders);
             return supplierOrders.map(supplierOrder => ({
                 supplier: supplierOrder.supplierID,
                 order: {
@@ -88,7 +87,7 @@ const supplierServices = {
             throw error;
         }
     },
-    
+
 
     updateSupplierOrder: async (id, supplierOrderData) => {
         try {
@@ -96,7 +95,17 @@ const supplierServices = {
         } catch (error) {
             throw error;
         }
-    }
+    },
+
+    getSupplierIdByName: async (name) => {
+        const supplier = await Supplier.findOne({ name:name.trim() });
+        console.log(supplier, name, "\n------\n")
+        if (!supplier) {
+            supplier = await Supplier.findOne({ name: "MEGA IMPORTS BRAMPTON" });
+            console.log(supplier, 2, "\n------\n")
+        }
+        return supplier ? supplier._id : null;
+    },
 };
 
 module.exports = supplierServices;

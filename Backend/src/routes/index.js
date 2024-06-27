@@ -7,6 +7,8 @@ const SupplierController = require("../controllers/supplierController");
 const productController = require('../controllers/productController');
 const orderController = require('../controllers/orderController');
 const customerController = require('../controllers/customerController');
+const { imageUpload, fileUpload } = require("../config/multerConfig");
+
 
 var jsonParser = bodyParser.json()
 
@@ -17,12 +19,13 @@ router.post('/addCustomer', jsonParser, customerController.addCustomer);
 router.get('/getCustomerById/:id', jsonParser, customerController.getCustomerById);
 router.get('/getCustomers', jsonParser, customerController.getAllCustomers);
 
-router.post("/addProduct", jsonParser, productController.addProduct);
+router.post("/addProduct", jsonParser, imageUpload.array('childrenImages'), productController.addProduct);
 router.get("/products/:id", jsonParser, productController.getProductById);
 router.get("/products", jsonParser, productController.getAllProducts);
-router.post("/updateProductById/:id", jsonParser, productController.updateProduct);
+router.post("/updateProductById/:id", jsonParser, imageUpload.array('childrenImages'), productController.updateProduct);
 router.delete("/DeleteProductById/:id", jsonParser, productController.deleteProduct);
- 
+router.post('/uploadBulk', jsonParser, fileUpload.single('file'), productController.bulkUpload)
+
 router.post('/addOrder', jsonParser, orderController.addOrder);
 router.post('/getOrderById/:id', jsonParser, orderController.getOrderById);
 router.post('/updateOrder/:id', jsonParser, orderController.updateOrderById);

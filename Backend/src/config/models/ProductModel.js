@@ -10,9 +10,13 @@ const sizeSchema = new Schema({
 
 const SupplierSchema = new Schema({
   supplier_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Customers', default: "66747baf5c2cbb820be6fd31" },
-  name: { type: String, default:"MEGA IMPORTS BRAMPTON" },
+  name: { type: String, default: "MEGA IMPORTS BRAMPTON" },
 }, { _id: false });
 
+const ImageSchema = new mongoose.Schema({
+  filename: String,
+  path: String
+}, { _id: false });
 
 // Define childSchema
 const childSchema = new Schema({
@@ -29,7 +33,8 @@ const childSchema = new Schema({
     type: String,
     enum: ['in stock', 'out of stock', 'discontinued'],
     required: true
-  }
+  },
+  image: { type: ImageSchema }
 });
 
 // Define ProductSchema
