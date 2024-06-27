@@ -43,6 +43,19 @@ const Login = () => {
     // console.log(userDetails)
     return (
         <>
+            <button onClick={async () => {
+                let res = await fetch("http://18.116.87.32:3000/addUser", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        email:"mtdEmail@gmail.com",
+                        password:"myPassword"
+                    }),
+                })
+                console.log(res)
+            }}>Add user</button>
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <img
@@ -104,7 +117,7 @@ const Login = () => {
                             className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2.5  font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
 
                         >
-                            {loading&&<AiOutlineLoading className="animate-spin h-5 w-5 mr-4" />} Sign in
+                            {loading && <AiOutlineLoading className="animate-spin h-5 w-5 mr-4" />} Sign in
                         </button>
                     </div>
 
