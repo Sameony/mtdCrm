@@ -14,6 +14,7 @@ interface AutocompleteSupplierProps {
 
 const AutocompleteSupplier: React.FC<AutocompleteSupplierProps> = ({ onSelect, value }) => {
   const [query, setQuery] = useState<string>(value ? value.name : '');
+  const [Suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [filteredSuppliers, setFilteredSuppliers] = useState<Supplier[]>([]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -26,7 +27,8 @@ const AutocompleteSupplier: React.FC<AutocompleteSupplierProps> = ({ onSelect, v
                 toast.error(response.data.err ?? "Something went wrong while fetching list of suppliers")
             else {
                 const data = response.data.data
-                setFilteredSuppliers(data);
+                setSuppliers(data.filter((item:any)=>item.category==="Supplier"))
+                setFilteredSuppliers(data.filter((item:any)=>item.category==="Supplier"));
             }
         } catch (error) {
             console.error('Error fetching suppliers:', error);
@@ -52,7 +54,7 @@ const AutocompleteSupplier: React.FC<AutocompleteSupplierProps> = ({ onSelect, v
     setQuery(event.target.value);
     setIsOpen(true);
 
-    const filtered = filteredSuppliers.filter((supplier) =>
+    const filtered = Suppliers.filter((supplier) =>
       supplier.name.toLowerCase().includes(event.target.value.toLowerCase())
     );
     setFilteredSuppliers(filtered);

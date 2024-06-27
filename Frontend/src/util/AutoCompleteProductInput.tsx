@@ -1,25 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { orderApis } from '../config/orderApi';
 import { toast } from 'react-toastify';
-
-interface Size {
-    L: number;
-    W: number;
-    H: number;
-}
-
-interface Child {
-    SKU: string;
-    name: string;
-    color: string;
-    selling_price: number;
-    sale_price: number;
-    cost_price: number;
-    product_size: Size;
-    shipping_size: Size;
-    weight: number;
-    status: string;
-}
+import { Child } from '../config/models/Child';
 
 interface Product {
     _id: string;
@@ -46,6 +28,7 @@ const AutocompleteProductInput: React.FC<{ value: string,setInputValue:(any), on
             const response = await orderApis.getAllProducts();
             // console.log(response)
             const data: Product[] = response.data.data
+            console.log(data)
             setProducts(data);
             setFilteredProducts(data.flatMap(product => product.children.map(child => ({ ...child, parentName: product.name, parent_id:product._id }))));
         } catch (error:any) {
@@ -75,7 +58,7 @@ const AutocompleteProductInput: React.FC<{ value: string,setInputValue:(any), on
 
         const filtered = products.flatMap(product =>
             product.children.filter(child =>
-                `${product.name} ${child.name}`.toLowerCase().includes(query)
+                `${product.name} ${child.name}`.toLowerCase().includes(query)&&child.status==="in stock"
             ).map(child => ({ ...child, parentName: product.name }))
         );
 

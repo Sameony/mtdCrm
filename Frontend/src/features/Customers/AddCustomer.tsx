@@ -3,6 +3,8 @@ import { customerApis } from '../../config/customerApi';
 import { toast } from 'react-toastify';
 import Loading from '../../util/Loading';
 import { useNavigate } from 'react-router-dom';
+import { Button } from 'flowbite-react';
+import { FaChevronLeft } from 'react-icons/fa6';
 
 interface Address {
   street: string;
@@ -58,7 +60,7 @@ const AddCustomer: React.FC = () => {
         toast.success("New customer added successfully")
         navigate("/customers")
       }
-      else{
+      else {
         toast.error(res.data.err)
       }
     } catch (error: any) {
@@ -72,8 +74,14 @@ const AddCustomer: React.FC = () => {
   };
 
   return (
-    loading?<Loading />:<form onSubmit={handleSubmit} className="max-w-xl mx-auto bg-white p-8 shadow-md rounded-lg">
-      <h2 className="text-2xl font-semibold mb-6">Add Customer</h2>
+    loading ? <Loading /> : <form onSubmit={handleSubmit} className="max-w-4xl mx-auto bg-white p-8 shadow-md rounded-lg">
+      <div className="flex items-center mb-12 justify-between">
+        <Button className='' color={'gray'} onClick={() => navigate(-1)}>
+          <span className='flex gap-2 items-center'><FaChevronLeft />Back</span>
+        </Button>
+        <h2 className="text-2xl font-semibold">Add Customer</h2>
+        <p></p>
+      </div>
 
       <div className="mb-4">
         <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">* Email:</label>
@@ -133,7 +141,7 @@ const AddCustomer: React.FC = () => {
           type="text"
           id="address.street"
           name="address.street"
-          value={formState.address?formState.address.street:""}
+          value={formState.address ? formState.address.street : ""}
           onChange={handleInputChange}
           className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-200"
         />
@@ -145,7 +153,7 @@ const AddCustomer: React.FC = () => {
           type="text"
           id="address.city"
           name="address.city"
-          value={formState.address?formState.address.city:""}
+          value={formState.address ? formState.address.city : ""}
           onChange={handleInputChange}
           className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-200"
         />
@@ -157,7 +165,7 @@ const AddCustomer: React.FC = () => {
           type="text"
           id="address.pin"
           name="address.pin"
-          value={formState.address?formState.address.pin:""}
+          value={formState.address ? formState.address.pin : ""}
           onChange={handleInputChange}
           className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-200"
         />

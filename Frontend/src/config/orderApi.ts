@@ -29,6 +29,9 @@ const updateProduct = async (param:any,body:any) => {
 const createProduct = async (body:any) => {
     return await axios.post(apiUrl.createProduct, body)
 }
+const createBulkProduct = async (body:any) => {
+    return await axios.post(apiUrl.uploadBulkProduct, body)
+}
 const addPaymentToOrder = async (param:any, body:any) =>{
     return await axios.post(`${apiUrl.addPaymentToOrder}/${param}`,body)
 }
@@ -47,5 +50,6 @@ export const orderApis = {
     getPaymentById,
     getProductById,
     updateProduct,
-    createProduct
+    createProduct,
+    createBulkProduct
 }

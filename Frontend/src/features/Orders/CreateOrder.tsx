@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { Button, Datepicker, Table, TextInput, ToggleSwitch } from 'flowbite-react';
+import { Button, Datepicker, Label, Radio, Table, TextInput } from 'flowbite-react';
 import AutoCompleteCustomerInput from '../../util/AutoCompleteCustomerInput';
 import { orderApis } from '../../config/orderApi';
 import { MdDelete } from 'react-icons/md';
@@ -8,6 +8,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Loading from '../../util/Loading';
 import AutocompleteProductInput from '../../util/AutoCompleteProductInput';
 import { FaChevronLeft } from 'react-icons/fa';
+import { Child } from '../../config/models/Child';
+import { RiAddBoxFill } from 'react-icons/ri';
 
 interface Address {
   street: string;
@@ -31,27 +33,6 @@ interface OrderFormState {
   expected_delivery: Date;
 }
 
-interface Size {
-  L: number;
-  W: number;
-  H: number;
-}
-
-interface Child {
-  SKU: string;
-  name: string;
-  color: string;
-  selling_price: number;
-  sale_price: number;
-  cost_price: number;
-  product_size: Size;
-  shipping_size: Size;
-  weight: number;
-  status: string;
-  parentName: string;
-  _id?: string;
-  parent_id?: string;
-}
 
 const OrderForm = () => {
   const { id } = useParams<{ id: string }>(); // Get the ID from the URL parameters
@@ -194,8 +175,8 @@ const OrderForm = () => {
   };
 
   const handleQuantityChange = (SKU: string, quantity: number) => {
-    if(quantity<1)
-      quantity=1
+    if (quantity < 1)
+      quantity = 1
     setSelectedProducts(selectedProducts.map(product =>
       product.SKU === SKU ? { ...product, quantity } : product
     ));
@@ -285,13 +266,16 @@ const OrderForm = () => {
 
   return (
     loading ? <Loading /> : (
-      <form className="max-w-2xl mx-auto bg-white p-8 shadow-md rounded-lg">
+      <form className="max-w-4xl mx-auto bg-white p-8 shadow-md rounded-lg">
         <div className="flex mb-8 justify-between items-center">
           <Button className='' color={'gray'} onClick={() => navigate("/orders")}>
             <span className='flex gap-2 items-center'><FaChevronLeft />Back</span>
           </Button>
           <h2 className="text-2xl font-semibold">{id ? 'Edit Order' : 'Create Order'}</h2>
-          <p></p>
+          <button className=" bg-green-500 text-white py-2 px-4 rounded-md shadow-sm hover:bg-green-600 focus:outline-none focus:ring focus:ring-indigo-200"
+            onClick={() => navigate("/customers/add")}>
+            <span className='flex gap-2 items-center'><RiAddBoxFill />Add Customer</span>
+          </button>
         </div>
 
 
@@ -301,6 +285,7 @@ const OrderForm = () => {
             value={customerName}
             onChange={handleCustomerChange}
           />
+          {/* <p>Add new customer</p> */}
         </div>
 
         <label htmlFor="productsInput" className="block text-sm font-medium text-gray-700 mb-2">Add Products:</label>
@@ -423,26 +408,42 @@ const OrderForm = () => {
           </>
         )}
 
-        <div className="mb-4 flex items-center">
-          <label htmlFor="hasTax" className="block text-sm font-medium text-gray-700 mr-2">Add Tax:</label>
-          <ToggleSwitch
+        <div className="flex mb-4 justify-between items-center">
+
+          <div className="">
+            <label htmlFor="hasTax" className="block text-sm font-medium text-gray-700 mr-2 mb-2">Add Tax:</label>
+            {/* <ToggleSwitch
             color='indigo'
             id="hasTax"
             checked={hasTax}
             onChange={(checked) => setHasTax(checked)}
           />
+          <legend className="mb-4">Add Tax</legend> */}
+            <div className="flex items-center gap-5">
+              <div className="flex items-center gap-2">
+                <Radio name="hasTax" onChange={(e) => { setHasTax(e.target.checked ? true : false) }} checked={hasTax} />
+                <Label>Yes</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Radio name="hasTax" onChange={(e) => { setHasTax(!e.target.checked ? true : false) }} checked={!hasTax} />
+                <Label> No</Label>
+              </div>
+            </div>
+
+          </div>
+          {hasTax ? <div className="max-w-96 flex-1">
+            <label htmlFor="paid_amount" className="block text-sm font-medium text-gray-700 mb-2">Tax Amount:</label>
+            <TextInput
+              disabled
+              type="number"
+              // id="paid_amount"
+              // name="paid_amount"
+              value={formState.tax}
+            // onChange={rder-gray-300 rounded-md"
+            />
+          </div> : <></>}
         </div>
-        <div className="mb-4">
-          <label htmlFor="paid_amount" className="block text-sm font-medium text-gray-700 mb-2">Tax Amount:</label>
-          <TextInput
-            disabled
-            type="number"
-            // id="paid_amount"
-            // name="paid_amount"
-            value={formState.tax}
-          // onChange={rder-gray-300 rounded-md"
-          />
-        </div>
+
 
         <div className="mb-4">
           <label htmlFor="added_cost" className="block text-sm font-medium text-gray-700 mb-2">Additional Cost:</label>
@@ -497,7 +498,7 @@ const OrderForm = () => {
 
         <div className='mb-4'>
           <label htmlFor="due_amount" className="block text-sm font-medium text-gray-700 mb-2">Expected Delivery Date:</label>
-          <Datepicker minDate={new Date()} onSelectedDateChanged={(date)=>setFormState(prev=>({...prev,expected_delivery:date }))} />
+          <Datepicker minDate={new Date()} onSelectedDateChanged={(date) => setFormState(prev => ({ ...prev, expected_delivery: date }))} />
         </div>
 
         {id !== undefined ? <div className="mb-4">

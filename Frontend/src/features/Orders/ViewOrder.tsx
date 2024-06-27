@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../../util/Loading';
 import { MdEdit, MdRemoveRedEye } from 'react-icons/md';
+import { RiAddBoxFill } from 'react-icons/ri';
 
 
 const ViewOrder: React.FC = () => {
@@ -72,9 +73,16 @@ const ViewOrder: React.FC = () => {
   }
   // console.log(filterDate)
   return (
-    loading ? <Loading /> : <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Order List</h1>
-      <div className="mb-4 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+    loading ? <Loading /> : <div className=" mx-auto bg-white p-8 rounded-lg">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-semibold">Order List</h1>
+        <button className=" bg-green-500 text-white py-2 px-4 rounded-md shadow-sm hover:bg-green-600 focus:outline-none focus:ring focus:ring-indigo-200"
+          onClick={() => navigate("/orders/add")}>
+          <span className='flex gap-2 items-center'><RiAddBoxFill />Create Order</span>
+        </button>
+
+      </div>
+      <div className="mb-6 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
         <div className='flex items-end gap-4 flex-1'>
           <input
             type="text"
@@ -85,7 +93,7 @@ const ViewOrder: React.FC = () => {
           />
           <label>
             Status
-            <select className='rounded-md text-gray-500 accent-gray-500' value={statusFilter} onChange={handleStatusChange}>
+            <select className='ml-2 rounded-md text-gray-500 accent-gray-500' value={statusFilter} onChange={handleStatusChange}>
               <option value="">All</option>
               <option value="Processing">Processing</option>
               <option value="Completed">Completed</option>
@@ -99,19 +107,19 @@ const ViewOrder: React.FC = () => {
 
         <div className='flex justify-between sm:justify-start my-3 sm:my-0 gap-5 text-gray-500'>
           <label>
-            Start Date:
+            Start Date
             <input
               type="date"
-              className='rounded-md border-gray-500 accent-gray-500 cursor-pointer'
+              className='ml-2 rounded-md border-gray-500 accent-gray-500 cursor-pointer'
               value={filterDate.start}
               onChange={(e) => changeFilterDate(e.target.value, "start")}
             />
           </label>
           <label>
-            End Date:
+            End Date
             <input
               type="date"
-              className='rounded-md border-gray-500 accent-gray-500 cursor-pointer'
+              className='ml-2 rounded-md border-gray-500 accent-gray-500 cursor-pointer'
               value={filterDate.end}
               onChange={(e) => changeFilterDate(e.target.value, "end")}
             />
