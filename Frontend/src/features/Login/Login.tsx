@@ -43,26 +43,7 @@ const Login = () => {
     // console.log(userDetails)
     return (
         <>
-            <button onClick={async () => {
-                    const myHeaders = new Headers();
-                    myHeaders.append("Content-Type", "application/json");
-                    
-                    const raw = JSON.stringify({
-                      "email": "mtdEmail@gmail.com",
-                      "password": "myPassword"
-                    });
-                    
-                    const requestOptions = {
-                      method: "POST",
-                      headers: myHeaders,
-                      body: raw,
-                    };
-                    
-                    fetch("http://18.116.87.32:3000/addUser", requestOptions)
-                      .then((response) => response.text())
-                      .then((result) => console.log(result))
-                      .catch((error) => console.error(error));
-            }}>Add user</button>
+            
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <img

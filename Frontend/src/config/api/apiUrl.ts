@@ -1,6 +1,6 @@
 // const base = "https://mtd-crm.vercel.app"
 // const base = "http://localhost:3000"
-const base = "http://18.116.87.32:3000"
+const base = "http://3.140.131.180:3000"
 
 export const apiUrl = {
     base: base,
