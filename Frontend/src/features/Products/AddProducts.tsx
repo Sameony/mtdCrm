@@ -21,6 +21,7 @@ interface Size {
 interface Supplier {
     supplier_id: string;
     name: string;
+    _id?:string;
 }
 
 interface ProductFormState {

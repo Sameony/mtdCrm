@@ -3,7 +3,7 @@ import { supplierApis } from '../config/supplierApi';
 import { toast } from 'react-toastify';
 
 interface Supplier {
-  supplier_id?: string;
+  supplier_id: string;
   _id?:string;
   name: string;
 }
