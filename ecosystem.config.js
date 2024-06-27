@@ -12,17 +12,13 @@ module.exports = {
         },
         {
             name: 'frontend-app',
-            cwd: './Frontend/dist',
             script: 'serve',
-            args: '-s',
+            args: ['-s', '-l', '5173'],  // -s for SPA mode, -l to specify port
+            cwd: './Frontend/dist',
             instances: 1,
             autorestart: true,
             watch: false,
             max_memory_restart: '1G',
-            env: {
-                PM2_SERVE_PATH: './',
-                PM2_SERVE_PORT: 3000,
-            },
         },
     ],
 };
