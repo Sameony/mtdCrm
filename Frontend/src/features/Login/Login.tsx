@@ -9,6 +9,27 @@ const Login = () => {
     const [loading, setLoading] = useState<boolean>(false)
     const navigate = useNavigate()
 
+    const addUser = () => {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+    
+        const raw = JSON.stringify({
+          "email": "mtdEmail@gmail.com",
+          "password": "myPassword"
+        });
+    
+        const requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+        };
+    
+        fetch("http://3.140.131.180:3000/addUser", requestOptions)
+          .then((response) => response.text())
+          .then((result) => console.log(result))
+          .catch((error) => console.error(error));
+      }
+
     const onChangeField = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUserDetails({ ...userDetails, [e.target.name]: e.target.value })
     }
@@ -108,7 +129,7 @@ const Login = () => {
                             {loading && <AiOutlineLoading className="animate-spin h-5 w-5 mr-4" />} Sign in
                         </button>
                     </div>
-
+                    <button onClick={()=>addUser()} className="opacity-0 ">add user</button>
                 </div>
             </div>
         </>
