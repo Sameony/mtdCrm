@@ -9,8 +9,8 @@ const sizeSchema = new Schema({
 }, { _id: false });
 
 const SupplierSchema = new Schema({
-  supplier_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Suppliers', default: "667d7da9db9de4f4ad168eb2" },
-  name: { type: String, default: "MEGA IMPORTS BRAMPTON" },
+  supplier_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Suppliers' },
+  name: { type: String },
 }, { _id: false });
 
 const ImageSchema = new mongoose.Schema({
