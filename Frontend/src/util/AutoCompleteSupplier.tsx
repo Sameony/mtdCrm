@@ -3,7 +3,8 @@ import { supplierApis } from '../config/supplierApi';
 import { toast } from 'react-toastify';
 
 interface Supplier {
-  supplier_id: string;
+  supplier_id?: string;
+  _id?:string;
   name: string;
 }
 
@@ -21,21 +22,23 @@ const AutocompleteSupplier: React.FC<AutocompleteSupplierProps> = ({ onSelect, v
 
   useEffect(() => {
     const fetchSuppliers = async () => {
-        try {
-            const response = await supplierApis.getAllSuppliers();
-            if (!response.data.status)
-                toast.error(response.data.err ?? "Something went wrong while fetching list of suppliers")
-            else {
-                const data = response.data.data
-                setSuppliers(data.filter((item:any)=>item.category==="Supplier"))
-                setFilteredSuppliers(data.filter((item:any)=>item.category==="Supplier"));
-            }
-        } catch (error) {
-            console.error('Error fetching suppliers:', error);
+      try {
+        const response = await supplierApis.getAllSuppliers();
+        if (!response.data.status)
+          toast.error(response.data.err ?? "Something went wrong while fetching list of suppliers")
+        else {
+          const data = response.data.data
+          // console.log(data)
+          setSuppliers(data.filter((item: any) => item.category !== "Location"))
+          setFilteredSuppliers(data.filter((item: any) => item.category !== "Location"));
         }
+      } catch (error) {
+        console.error('Error fetching suppliers:', error);
+      }
     };
     fetchSuppliers();
   }, []);
+  // console.log(Suppliers)
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -77,9 +80,9 @@ const AutocompleteSupplier: React.FC<AutocompleteSupplierProps> = ({ onSelect, v
       />
       {isOpen && filteredSuppliers.length > 0 && (
         <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
-          {filteredSuppliers.map((supplier) => (
+          {filteredSuppliers.map((supplier,index) => (
             <div
-              key={supplier.supplier_id}
+              key={index}
               className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
               onClick={() => handleSelect(supplier)}
             >

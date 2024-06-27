@@ -10,7 +10,7 @@ import AutocompleteSupplier from '../../util/AutoCompleteSupplier';
 import { FaChevronRight, FaPencil } from 'react-icons/fa6';
 import { Child } from '../../config/models/Child';
 import { apiUrl } from '../../config/api/apiUrl';
-import BulkUpload from './BulkUpload';
+import BulkUpload from '../../util/BulkUpload';
 
 interface Size {
     L: number;
@@ -223,7 +223,7 @@ const ProductForm: React.FC = () => {
 
 
     return (
-        loading ? <Loading /> : bulkUpload ? <BulkUpload setLoading={setLoading} setBulkUpload={setBulkUpload} /> : <form onSubmit={handleSubmit} className="max-w-5xl mx-auto bg-white p-8 shadow-md rounded-lg">
+        loading ? <Loading /> : bulkUpload ? <BulkUpload setLoading={setLoading} setBulkUpload={setBulkUpload} isSupplier={false} /> : <form onSubmit={handleSubmit} className="max-w-5xl mx-auto bg-white p-8 shadow-md rounded-lg">
 
             <div className='mb-6 flex items-center justify-between'>
                 <Button color='gray' onClick={() => navigate(-1)}>

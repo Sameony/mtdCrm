@@ -41,7 +41,7 @@ const ViewSuppliers: React.FC = () => {
         placeholder="Search by name or mobile number"
         value={searchTerm}
         onChange={handleSearchChange}
-        className="mb-4 p-2 border border-gray-300 rounded-md"
+        className="mb-4 p-2 border border-gray-300 rounded-md md:min-w-72"
       />
       <table className="min-w-full bg-white border">
         <thead>

@@ -74,7 +74,19 @@ class SupplierController {
         }
     };
 
-
+    multiUploadSuppliers = async (req, res) => {
+        try {
+            const suppliers = req.file
+            // console.log(suppliers)
+            let response = await supplierServices.bulkUpload(suppliers);
+            if(response)
+                return res.json({ status: true, data: response, err: {} });
+            else
+                throw new Error("Something went wrong. Please double check the file format.")
+        } catch (error) {
+            return res.json({ status: false, data: {}, err: error });
+        }
+    };
 
 }
 

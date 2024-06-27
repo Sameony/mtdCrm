@@ -1443,6 +1443,10 @@ input[type="range"]::-ms-fill-lower {
   margin-left: 1rem;
 }
 
+.mt-5 {
+  margin-top: 1.25rem;
+}
+
 .block {
   display: block;
 }
@@ -6394,6 +6398,10 @@ input[type="range"]::-ms-fill-lower {
 
   .md\:w-auto {
     width: auto;
+  }
+
+  .md\:min-w-72 {
+    min-width: 18rem;
   }
 
   .md\:max-w-xl {

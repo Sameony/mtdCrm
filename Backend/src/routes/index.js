@@ -35,6 +35,7 @@ router.post('/updatePaymentById/:id', jsonParser, orderController.updatePaymentB
 router.post('/addPaymentToOrderId/:id', jsonParser, orderController.addPaymentToOrderId);
 
 router.post("/suppliers", jsonParser, SupplierController.addSupplier);
+router.post('/uploadMultiSuppliers',jsonParser, fileUpload.single('file'), SupplierController.multiUploadSuppliers);
 router.get("/suppliers/:id", jsonParser, SupplierController.getSupplierById);
 router.get("/suppliers", jsonParser, SupplierController.getAllSuppliers);
 router.post("/updateSupplierById/:id", jsonParser, SupplierController.updateSupplier);

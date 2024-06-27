@@ -9,7 +9,7 @@ const sizeSchema = new Schema({
 }, { _id: false });
 
 const SupplierSchema = new Schema({
-  supplier_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Customers', default: "66747baf5c2cbb820be6fd31" },
+  supplier_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Suppliers', default: "667d7da9db9de4f4ad168eb2" },
   name: { type: String, default: "MEGA IMPORTS BRAMPTON" },
 }, { _id: false });
 

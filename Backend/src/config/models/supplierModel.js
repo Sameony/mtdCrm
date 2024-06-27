@@ -11,6 +11,7 @@ const SupplierSchema = new Schema({
     phoneNumber1: {
         type: String,
         required: true,
+        unique:true
     },
     phoneNumber2: {
         type: String,
@@ -18,6 +19,7 @@ const SupplierSchema = new Schema({
     emailID: {
         type: String,
         required: true,
+        unique:true
     },
     pickupLocation: {
         type: String,
@@ -27,6 +29,11 @@ const SupplierSchema = new Schema({
         type: String,
         required: true,
     },
+    category:{
+        type: String,
+        enum:["Location" | "Supplier"],
+        default:"Supplier"
+    }
 });
 const Supplier = mongoose.model('Suppliers', SupplierSchema);
 module.exports = Supplier

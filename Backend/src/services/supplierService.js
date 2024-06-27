@@ -1,5 +1,6 @@
 const Supplier = require("../config/models/supplierModel");
 const SupplierOrders = require("../config/models/supplierOrderModel");
+const excelService = require("./excelService");
 
 const supplierServices = {
     addSupplier: async (supplierData) => {
@@ -26,8 +27,31 @@ const supplierServices = {
             throw error;
         }
     },
-
-    updateSupplier: async (id, supplierData) => {
+    bulkUpload: async (file) =>{
+        try {
+            if (file.mimetype === 'text/csv') {
+                return excelService.parseCSV(file.path, async (data) => {
+                //   console.log(data);
+                  return await Supplier.insertMany(data)
+                });
+              } else if (
+                file.mimetype ===
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+              ) {
+                // console.log('here')
+                const data = excelService.parseExcel(file.path);
+                // console.log(data);
+                return await Supplier.insertMany(data)
+              } else {
+                throw new Error('Unsupported file type.');
+              }
+            // return await Supplier.insertMany(suppliers, { ordered: false });
+        } catch (error) {
+            console.log(error)
+            throw new Error('Bulk upload failed: ' + error.message);
+        }
+    },
+        updateSupplier: async (id, supplierData) => {
         try {
             return await Supplier.findByIdAndUpdate(id, supplierData, { new: true });
         } catch (error) {
@@ -55,7 +79,7 @@ const supplierServices = {
 
     getAllSupplierOrders: async () => {
         try {
-            console.log("HI");
+            // console.log("HI");
             const supplierOrders = await SupplierOrders.find()
                 .populate('supplierID')
                 .populate({
@@ -98,11 +122,11 @@ const supplierServices = {
     },
 
     getSupplierIdByName: async (name) => {
-        const supplier = await Supplier.findOne({ name:name.trim() });
-        console.log(supplier, name, "\n------\n")
+        const supplier = await Supplier.findOne({ name: name.trim() });
+        // console.log(supplier, name, "\n------\n")
         if (!supplier) {
             supplier = await Supplier.findOne({ name: "MEGA IMPORTS BRAMPTON" });
-            console.log(supplier, 2, "\n------\n")
+            // console.log(supplier, 2, "\n------\n")
         }
         return supplier ? supplier._id : null;
     },

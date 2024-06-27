@@ -24,6 +24,7 @@ export const apiUrl = {
 
     getSupplier: `${base}/suppliers`,
     createSupplier: `${base}/suppliers`,
+    createMultiSupplier: `${base}/uploadMultiSuppliers`,
     updateSupplier: `${base}/updateSupplierById`,
     getAllSupplierOrders: `${base}/supplyOrders`,
 

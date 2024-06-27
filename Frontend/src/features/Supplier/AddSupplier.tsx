@@ -3,6 +3,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Supplier } from '../../config/models/supplier';
 import { supplierApis } from '../../config/supplierApi';
 import { toast } from 'react-toastify';
+import BulkUpload from '../../util/BulkUpload';
+import Loading from '../../util/Loading';
+import { Button } from 'flowbite-react';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
 
 interface SupplierErrors {
   name?: string;
@@ -25,6 +29,9 @@ const SupplierForm: React.FC = () => {
     pickupGoogleMapLink: '',
   });
   const [errors, setErrors] = useState<SupplierErrors>({});
+  const [loading, setLoading] = useState<boolean>(false);
+  const [bulkUpload, setBulkUpload] = useState<boolean>(false);
+
 
   useEffect(() => {
     const fetchSupplier = async () => {
@@ -32,7 +39,7 @@ const SupplierForm: React.FC = () => {
         try {
           const response = await supplierApis.getSupplierById(id);
           if (!response.data.status) {
-            toast.error(response.data.err??'Failed to fetch supplier');
+            toast.error(response.data.err ?? 'Failed to fetch supplier');
           }
           setFormData(response.data.data);
         } catch (error) {
@@ -63,8 +70,8 @@ const SupplierForm: React.FC = () => {
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     let { name, value } = e.target;
-    if(name==="name")
-        value = value?.toLocaleUpperCase()
+    if (name === "name")
+      value = value?.toLocaleUpperCase()
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
@@ -76,22 +83,30 @@ const SupplierForm: React.FC = () => {
     if (!validate()) return;
 
     try {
-      const response = id?await supplierApis.updateSupplier(id,formData):await supplierApis.createSupplier(formData)
+      const response = id ? await supplierApis.updateSupplier(id, formData) : await supplierApis.createSupplier(formData)
       if (response.data.status) {
-        toast.success("Successfully"+id?" updated":" added"+"the supplier.")
+        toast.success("Successfully" + id ? " updated" : " added" + "the supplier.")
         navigate('/supplier');
       } else {
-        toast.error(response.data.err??"Something went wrong")
+        toast.error(response.data.err ?? "Something went wrong")
       }
-    } catch (error:any) {
+    } catch (error: any) {
       console.error('Error:', error);
-      toast.error(error.response.data.err??'Failed to save supplier');
+      toast.error(error.response.data.err ?? 'Failed to save supplier');
     }
   };
 
   return (
-    <div className="max-w-xl mx-auto p-6 bg-white shadow-md rounded-lg">
-      <h2 className="text-2xl font-semibold mb-4">{id ? 'Edit Supplier' : 'Add Supplier'}</h2>
+    loading ? <Loading /> : bulkUpload ? <BulkUpload setLoading={setLoading} setBulkUpload={setBulkUpload} isSupplier={true} /> : <div className="max-w-xl mx-auto p-6 bg-white shadow-md rounded-lg">
+      <div className='mb-6 flex items-center justify-between'>
+        <Button color='gray' onClick={() => navigate(-1)}>
+          <span className='flex gap-2 items-center'><FaChevronLeft />Back</span>
+        </Button>
+        <h2 className="text-2xl font-semibold mb-4">{id ? 'Edit Supplier' : 'Add Supplier'}</h2>
+        {id ? <p></p> : <Button color='gray' onClick={() => setBulkUpload(true)}>
+          <span className='flex gap-2 items-center'>Upload Multiple<FaChevronRight /></span>
+        </Button>}
+      </div>
       <form onSubmit={handleSubmit}>
         {[
           { label: 'Name', name: 'name', type: 'text' },
@@ -106,15 +121,14 @@ const SupplierForm: React.FC = () => {
               {field.label}:
             </label>
             <input
-            
+
               type={field.type}
               id={field.name}
               name={field.name}
               value={formData[field.name as keyof Supplier]} // Type assertion to satisfy TypeScript
               onChange={handleInputChange}
-              className={`block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none ${
-                errors[field.name as keyof SupplierErrors] ? 'border-red-500' : 'border-gray-300'
-              }`}
+              className={`block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none ${errors[field.name as keyof SupplierErrors] ? 'border-red-500' : 'border-gray-300'
+                }`}
             />
             {errors[field.name as keyof SupplierErrors] && (
               <p className="text-red-500 text-sm">{errors[field.name as keyof SupplierErrors]}</p>

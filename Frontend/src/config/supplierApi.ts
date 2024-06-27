@@ -13,6 +13,9 @@ const updateSupplier = async (param:any,body:any) => {
 const createSupplier = async (body:any) => {
     return await axios.post(apiUrl.createSupplier, body)
 }
+const createBulkSuppliers = async (body:any) => {
+    return await axios.post(apiUrl.createMultiSupplier, body)
+}
 const getAllSupplierOrders= async () => {
     return await axios.get(apiUrl.getAllSupplierOrders);  
 }
@@ -21,5 +24,6 @@ export const supplierApis = {
     getSupplierById,
     updateSupplier,
     createSupplier,
-    getAllSupplierOrders
+    getAllSupplierOrders,
+    createBulkSuppliers
 }
