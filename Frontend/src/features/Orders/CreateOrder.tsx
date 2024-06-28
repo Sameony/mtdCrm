@@ -96,7 +96,7 @@ const OrderForm = () => {
     setFormState((prevState) => ({
       ...prevState,
       amount_total: totalAmount,
-      due_amount: totalAmount,
+      due_amount: id?prevState.due_amount:totalAmount,
     }));
   }, [formState.sub_total, formState.tax, formState.discount, formState.added_cost]);
 
@@ -432,7 +432,7 @@ const OrderForm = () => {
 
           </div>
           {hasTax ? <div className="max-w-96 flex-1">
-            <label htmlFor="paid_amount" className="block text-sm font-medium text-gray-700 mb-2">Tax Amount:</label>
+            <label htmlFor="paid_amount" className="block text-sm font-medium text-gray-700 mb-2">Tax Amount(13%):</label>
             <TextInput
               disabled
               type="number"

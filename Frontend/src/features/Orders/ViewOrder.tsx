@@ -144,8 +144,8 @@ const ViewOrder: React.FC = () => {
                 <Table.Cell className="px-4 py-2 border-b border-gray-200">{new Date(order.order.createdAt).toISOString().split('T')[0]}</Table.Cell>
                 <Table.Cell className="px-4 py-2 border-b border-gray-200">{order.customer.email}</Table.Cell>
                 <Table.Cell className="px-4 py-2 border-b border-gray-200">{order.order._id}</Table.Cell>
-                <Table.Cell className="px-4 py-2 border-b border-gray-200">{order.order.amount_total}</Table.Cell>
-                <Table.Cell className="px-4 py-2 border-b border-gray-200">{order.order.due_amount}</Table.Cell>
+                <Table.Cell className="px-4 py-2 border-b border-gray-200">{order.order.amount_total?.toFixed(2)}</Table.Cell>
+                <Table.Cell className="px-4 py-2 border-b border-gray-200">{order.order.due_amount?.toFixed(2)}</Table.Cell>
                 <Table.Cell className="px-4 py-2 border-b border-gray-200">{order.order.ship_method}</Table.Cell>
                 <Table.Cell className="px-4 py-2 border-b border-gray-200">{order.order.status}</Table.Cell>
                 <Table.Cell className="px-4 py-2 border-b border-gray-200 ">
