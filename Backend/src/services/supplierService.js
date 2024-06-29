@@ -90,6 +90,7 @@ const supplierServices = {
                 });
             // console.log(supplierOrders);
             return supplierOrders.map(supplierOrder => ({
+                ...supplierOrder._doc,
                 supplier: supplierOrder.supplierID,
                 order: {
                     ...supplierOrder.orderID._doc,

@@ -1,6 +1,7 @@
 // models/ImportCompany.js
 
 const mongoose = require('mongoose');
+const addressSchema = require('./addressModel');
 const Schema = mongoose.Schema;
 
 const SupplierSchema = new Schema({
@@ -22,7 +23,7 @@ const SupplierSchema = new Schema({
         unique: true
     },
     pickupLocation: {
-        type: String,
+        type: addressSchema,
         required: true,
     },
     pickupGoogleMapLink: {

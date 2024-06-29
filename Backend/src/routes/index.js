@@ -7,6 +7,7 @@ const SupplierController = require("../controllers/supplierController");
 const productController = require('../controllers/productController');
 const orderController = require('../controllers/orderController');
 const customerController = require('../controllers/customerController');
+const RouteController = require("../controllers/routeController")
 const { imageUpload, fileUpload } = require("../config/multerConfig");
 
 
@@ -42,8 +43,14 @@ router.post("/updateSupplierById/:id", jsonParser, SupplierController.updateSupp
 router.post("/supplyOrders", jsonParser, SupplierController.addSupplierOrder);
 router.get("/supplyOrders/:id", jsonParser, SupplierController.getSupplierOrderById);
 router.get("/supplyOrders", jsonParser, SupplierController.getAllSupplierOrders);
-// router.post("/updateSupplierById/:id", jsonParser, SupplierController.orde);
 
+router.post('/routes', jsonParser, RouteController.createRoute);
+router.get('/routes', jsonParser, RouteController.getAllRoutes);
+router.get('/routes/:id', jsonParser, RouteController.getRouteById);
+router.post('/updateRoutes/:id', jsonParser, RouteController.updateRoute);
+router.post('/OProutes', jsonParser, RouteController.createOptimizedRoute);
+router.get('/OProutes', jsonParser, RouteController.getOptimizedRoutes);
+router.get('/OProutes/:id', jsonParser, RouteController.getOptimizedRouteById);
 
 
 module.exports = router

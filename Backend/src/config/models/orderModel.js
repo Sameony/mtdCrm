@@ -1,10 +1,5 @@
 const mongoose = require("mongoose")
-
-const addressSchema = new mongoose.Schema({
-    street: { type: String, required: true },
-    city: { type: String, required: true },
-    pin: { type: String, required: true },
-})
+const addressSchema = require("./addressModel")
 
 const ProductRefSchema = new mongoose.Schema({
     product_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },

@@ -23,9 +23,9 @@ const orderServices = {
             console.log("here")
             // Iterate through each product to organize by supplier
             for (const productRef of products) {
-                console.log(productRef)
+                // console.log(productRef)
                 const product = await Product.findById(productRef.product_id).populate("supplier").session(session);
-                console.log(product)
+                // console.log(product)
                 if (product && product.supplier) {
                     const supplierID = product.supplier.supplier_id?.toString(); // Ensure string comparison
                     if (!supplierMap.has(supplierID)) {
@@ -83,17 +83,9 @@ const orderServices = {
     },
     getAllOrders: async () => {
         try {
-            const base_orders = await Order.find();
-            const orders = await Promise.all(
-                base_orders.map(async (order) => {
-                    let customer = await customerServices.getCustomerById(order.customer);
-                    let products = await productServices.getProductNames(order.products);
-                    let payments = await orderServices.getPaymentsByOrderId(order._id)
-                    // console.log(customer, products, payments)
-                    return { order, customer, products, payments }
-                })
-            )
-            return orders;
+            const base_orders = await Order.find().populate('customer').populate('products').populate('payments');
+            // console.log(base_orders)
+            return base_orders;
         } catch (error) {
             throw error;
         }
