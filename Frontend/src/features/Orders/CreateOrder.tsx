@@ -10,28 +10,9 @@ import AutocompleteProductInput from '../../util/AutoCompleteProductInput';
 import { FaChevronLeft } from 'react-icons/fa';
 import { Child } from '../../config/models/Child';
 import { RiAddBoxFill } from 'react-icons/ri';
-
-interface Address {
-  street: string;
-  city: string;
-  pin: string;
-}
-
-interface OrderFormState {
-  customer: string;
-  ship_method: string;
-  ship_address: Address;
-  comment: string;
-  added_cost: number;
-  discount: number;
-  tax: number;
-  amount_total: number;
-  due_amount: number;
-  paid_amount: number;
-  status: string;
-  sub_total: number;
-  expected_delivery: Date;
-}
+import { OrderFormState } from '../../config/models/OrderForm';
+import AutoCompleteAddress from '../../util/AutoCompleteGoogle';
+import { Address } from '../../config/models/address';
 
 
 const OrderForm = () => {
@@ -40,9 +21,9 @@ const OrderForm = () => {
     customer: '',
     ship_method: 'MTD Shipping',
     ship_address: {
-      street: '',
-      city: '',
-      pin: ''
+      address: '',
+      longitude: '',
+      latitude: ''
     },
     comment: '',
     added_cost: 0,
@@ -96,7 +77,7 @@ const OrderForm = () => {
     setFormState((prevState) => ({
       ...prevState,
       amount_total: totalAmount,
-      due_amount: id?prevState.due_amount:totalAmount,
+      due_amount: id ? prevState.due_amount : totalAmount,
     }));
   }, [formState.sub_total, formState.tax, formState.discount, formState.added_cost]);
 
@@ -138,9 +119,9 @@ const OrderForm = () => {
           customer: customer._id,
           ship_method: order.ship_method,
           ship_address: {
-            street: order.ship_address?.street || '',
-            city: order.ship_address?.city || '',
-            pin: order.ship_address?.pin || ''
+            address: order.ship_address.address,
+            longitude: order.ship_address.longitude,
+            latitude: order.ship_address.latitude
           },
           comment: order.comment,
           added_cost: order.added_cost,
@@ -188,6 +169,11 @@ const OrderForm = () => {
       setInputValue('');
     }
   };
+  const handleAddressChange = (address: Address) => {
+    if (address.address) {
+      setFormState({ ...formState, ship_address: address })
+    }
+  };
   const handleRemoveProduct = (SKU: string) => {
     setSelectedProducts(selectedProducts.filter(product => product.SKU !== SKU));
   };
@@ -225,7 +211,7 @@ const OrderForm = () => {
       toast.info("Please select a customer.");
       return;
     } else if (formState.ship_method !== "Store Pickup") {
-      if (!formState.ship_address.city || !formState.ship_address.pin || !formState.ship_address.street) {
+      if (!formState.ship_address.address) {
         toast.info("Please provide complete shipping address.");
         return;
       }
@@ -374,16 +360,17 @@ const OrderForm = () => {
           <>
             <div className="mb-4">
               <label htmlFor="ship_address.street" className="block text-sm font-medium text-gray-700 mb-2">Street:</label>
-              <TextInput
+              {/* <TextInput
                 type="text"
                 id="ship_address.street"
                 name="ship_address.street"
                 value={formState.ship_address.street}
                 onChange={handleInputChange}
                 className=""
-              />
+              /> */}
+              <AutoCompleteAddress onChange={handleAddressChange} />
             </div>
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <label htmlFor="ship_address.city" className="block text-sm font-medium text-gray-700 mb-2">City:</label>
               <TextInput
                 type="text"
@@ -404,7 +391,7 @@ const OrderForm = () => {
                 onChange={handleInputChange}
                 className=""
               />
-            </div>
+            </div> */}
           </>
         )}
 

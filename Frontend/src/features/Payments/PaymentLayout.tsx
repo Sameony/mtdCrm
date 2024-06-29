@@ -52,6 +52,8 @@ const PaymentLayout: React.FC = () => {
         }
     }
     const handlePaymentChange = (index: number, field: string, value: string | number) => {
+        if(typeof value === "string" && field!=="link" && field!=="mode")
+            value=value?.toUpperCase()
         const newPayments = payments.map((payment, i) =>
             i === index ? { ...payment, [field]: value } : payment
         );

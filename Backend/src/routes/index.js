@@ -48,9 +48,9 @@ router.post('/routes', jsonParser, RouteController.createRoute);
 router.get('/routes', jsonParser, RouteController.getAllRoutes);
 router.get('/routes/:id', jsonParser, RouteController.getRouteById);
 router.post('/updateRoutes/:id', jsonParser, RouteController.updateRoute);
-router.post('/OProutes', jsonParser, RouteController.createOptimizedRoute);
-router.get('/OProutes', jsonParser, RouteController.getOptimizedRoutes);
-router.get('/OProutes/:id', jsonParser, RouteController.getOptimizedRouteById);
+// router.post('/OProutes', jsonParser, RouteController.createOptimizedRoute);
+// router.get('/OProutes', jsonParser, RouteController.getOptimizedRoutes);
+// router.get('/OProutes/:id', jsonParser, RouteController.getOptimizedRouteById);
 
 
 module.exports = router

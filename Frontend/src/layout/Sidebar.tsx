@@ -1,7 +1,7 @@
 import { Sidebar } from "flowbite-react";
 import { BiBuoy } from "react-icons/bi";
 import { BsFillClipboard2CheckFill } from "react-icons/bs";
-import { FaShop } from "react-icons/fa6";
+import { FaRoute, FaShop } from "react-icons/fa6";
 import { HiChartPie, HiOutlineMinusSm, HiOutlinePlusSm, HiShoppingBag, HiUser } from "react-icons/hi";
 import { twMerge } from "tailwind-merge";
 
@@ -70,6 +70,19 @@ const NavSideBar = ({ isSidebarOpen }: any) => {
                         <Sidebar.Item href="/supplier/">View Suppliers</Sidebar.Item>
                         <Sidebar.Item href="/supplier/add">Add Supplier</Sidebar.Item>
                         <Sidebar.Item href="/supplier/orders">View Supplier Orders</Sidebar.Item>
+                    </Sidebar.Collapse>
+                    <Sidebar.Collapse
+                        icon={FaRoute}
+                        label="Routes"
+                        renderChevronIcon={(theme, open) => {
+                            const IconComponent = open ? HiOutlineMinusSm : HiOutlinePlusSm;
+
+                            return <IconComponent aria-hidden className={twMerge(theme.label.icon.open[open ? 'on' : 'off'])} />;
+                        }}
+                    >
+                        <Sidebar.Item href="/routes/">View Routes</Sidebar.Item>
+                        <Sidebar.Item href="/routes/add">Add Route</Sidebar.Item>
+                        {/* <Sidebar.Item href="/supplier/orders">View Supplier Orders</Sidebar.Item> */}
                     </Sidebar.Collapse>
                 </Sidebar.ItemGroup>
                 <Sidebar.ItemGroup>

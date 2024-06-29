@@ -1,7 +1,7 @@
 
 
 const RouteService = require('../services/routeService');
-const OPRoute = require("../config/models/optimizedRoute")
+// const OPRoute = require("../config/models/optimizedRoute")
 const axios = require("axios")
 
 const RouteController = {
@@ -57,50 +57,50 @@ const RouteController = {
     },
 
     // Optimize the route using RouteXL API
-    createOptimizedRoute: async (req, res) => {
-        const { name, stops } = req.body;
-        console.log(name, stops)
-        try {
-            const response = await axios.post('https://api.routexl.com/v2/tour', {
-                locations: stops
-            }, {
-                auth: {
-                    username: process.env.ROUTEXL_USER,
-                    password: process.env.ROUTEXL_PASS
-                }
-            }).catch(err=>console.log(err))
-            console.log(response)
-            const optimizedStops = response.data.route;
-            const newRoute = new OPRoute({ name, stops, optimizedStops });
-            await newRoute.save();
+    // createOptimizedRoute: async (req, res) => {
+    //     const { name, stops } = req.body;
+    //     console.log(name, stops)
+    //     try {
+    //         const response = await axios.post('https://api.routexl.com/v2/tour', {
+    //             locations: stops
+    //         }, {
+    //             auth: {
+    //                 username: process.env.ROUTEXL_USER,
+    //                 password: process.env.ROUTEXL_PASS
+    //             }
+    //         }).catch(err=>console.log(err))
+    //         console.log(response)
+    //         const optimizedStops = response.data.route;
+    //         const newRoute = new OPRoute({ name, stops, optimizedStops });
+    //         await newRoute.save();
 
-            res.status(201).json({ status: true, data: newRoute, err: {} });
-        } catch (error) {
-            console.log(error)
-            res.status(500).json({ message: 'Error optimizing route', error: error.message });
-        }
-    },
+    //         res.status(201).json({ status: true, data: newRoute, err: {} });
+    //     } catch (error) {
+    //         console.log(error)
+    //         res.status(500).json({ message: 'Error optimizing route', error: error.message });
+    //     }
+    // },
 
-    getOptimizedRoutes: async (req, res) => {
-        try {
-            const routes = await OPRoute.find();
-            res.json({ status: true, data: routes, err: {} });
-        } catch (error) {
-            res.status(500).json({ status: false, data: {}, err: error.message });
-        }
-    },
+    // getOptimizedRoutes: async (req, res) => {
+    //     try {
+    //         const routes = await OPRoute.find();
+    //         res.json({ status: true, data: routes, err: {} });
+    //     } catch (error) {
+    //         res.status(500).json({ status: false, data: {}, err: error.message });
+    //     }
+    // },
 
-    getOptimizedRouteById: async (req, res) => {
-        try {
-            const route = await OPRoute.findById(req.params.id);
-            if (!route) {
-                return res.status(404).json({ message: 'Route not found' });
-            }
-            res.json({ status: true, data: route, err: {} });
-        } catch (error) {
-            res.status(500).json({ status: false, data: {}, err: error.message });
-        }
-    },
+    // getOptimizedRouteById: async (req, res) => {
+    //     try {
+    //         const route = await OPRoute.findById(req.params.id);
+    //         if (!route) {
+    //             return res.status(404).json({ message: 'Route not found' });
+    //         }
+    //         res.json({ status: true, data: route, err: {} });
+    //     } catch (error) {
+    //         res.status(500).json({ status: false, data: {}, err: error.message });
+    //     }
+    // },
 
 };
 

@@ -5,43 +5,37 @@ import Loading from '../../util/Loading';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'flowbite-react';
 import { FaChevronLeft } from 'react-icons/fa6';
-
-interface Address {
-  street: string;
-  city: string;
-  pin: string;
-}
-
-interface CustomerFormState {
-  email: string;
-  firstname: string;
-  lastname: string;
-  phone: number;
-  address?: Address | any;
-}
+import AutoCompleteAddress from '../../util/AutoCompleteGoogle';
+import { CustomerForm } from '../../config/models/customerForm';
+import { Address } from '../../config/models/address';
 
 const AddCustomer: React.FC = () => {
-  const [formState, setFormState] = useState<CustomerFormState>({
+  const [formState, setFormState] = useState<CustomerForm>({
     email: '',
     firstname: '',
     lastname: '',
     phone: 0,
+    // address:{
+    //   address:"",
+    //   longitude:"",
+    //   latitude:""
+    // }
   });
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
-
+  console.log(formState)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if (name.includes('address.')) {
-      const addressField = name.split('.')[1];
-      setFormState({
-        ...formState,
-        address: {
-          ...formState.address,
-          [addressField]: value
-        }
-      });
+      // const addressField = name.split('.')[1];
+      // setFormState({
+      //   ...formState,
+      //   address: {
+      //     ...formState.address,
+      //     [addressField]: value
+      //   }
+      // });
     } else {
       setFormState({
         ...formState,
@@ -71,6 +65,12 @@ const AddCustomer: React.FC = () => {
     }
     // Perform form submission logic, such as making an API call to create a new customer
     // console.log(formState);
+  };
+
+  const handleAddressChange = (address: Address) => {
+    if (address.address) {
+      setFormState({ ...formState, address: address })
+    }
   };
 
   return (
@@ -136,6 +136,12 @@ const AddCustomer: React.FC = () => {
       </div>
 
       <div className="mb-4">
+        <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">Address:</label>
+        <AutoCompleteAddress onChange={handleAddressChange} />
+      </div>
+
+
+      {/* <div className="mb-4">
         <label htmlFor="address.street" className="block text-sm font-medium text-gray-700 mb-2">Street:</label>
         <input
           type="text"
@@ -169,7 +175,7 @@ const AddCustomer: React.FC = () => {
           onChange={handleInputChange}
           className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-200"
         />
-      </div>
+      </div> */}
 
       <button type="submit" className="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
         Create Customer

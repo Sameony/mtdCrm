@@ -20,7 +20,8 @@ import ProductForm from './features/Products/AddProducts.tsx';
 import AddSupplier from './features/Supplier/AddSupplier.tsx';
 import ViewSupplier from './features/Supplier/ViewSupplier.tsx';
 import SupplierOrders from './features/Supplier/SupplierOrders.tsx';
-
+import CreateRoute from './features/Routes/AddRoute.tsx';
+import ViewRoutes from './features/Routes/ViewRoutes.tsx';
 
 const router = createBrowserRouter([
   {
@@ -82,6 +83,14 @@ const router = createBrowserRouter([
       {
         path: "/supplier/orders",
         element: <SupplierOrders />
+      },
+      {
+        path: "/routes",
+        element: <ViewRoutes />
+      },
+      {
+        path: "/routes/add",
+        element: <CreateRoute />
       },
 
 

@@ -5,21 +5,7 @@ import { Table } from 'flowbite-react';
 import { useNavigate } from 'react-router-dom';
 import { RiAddBoxFill } from 'react-icons/ri';
 import Loading from '../../util/Loading';
-
-interface Address {
-  street: string;
-  city: string;
-  pin: string;
-}
-
-interface Customer {
-  _id: string;
-  email: string;
-  firstname: string;
-  lastname: string;
-  phone: number;
-  address: Address;
-}
+import { Customer } from '../../config/models/customer';
 
 const CustomerList = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
@@ -100,7 +86,7 @@ const CustomerList = () => {
                 <Table.Cell>{customer.lastname}</Table.Cell>
                 <Table.Cell>{customer.email}</Table.Cell>
                 <Table.Cell>{customer.phone}</Table.Cell>
-                <Table.Cell>{customer.address ? customer.address.street + "," + customer.address.city + "," + customer.address.pin : ""}</Table.Cell>
+                <Table.Cell>{customer.address ? customer.address.address : ""}</Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>

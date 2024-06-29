@@ -5,10 +5,11 @@ import { Supplier } from '../config/models/supplier';
 
 interface AutocompleteSupplierProps {
   onSelect: (supplier: Supplier) => void;
-  value: Supplier | null;
+  value: Supplier | undefined;
+  isForLocation?:boolean
 }
 
-const AutocompleteSupplier: React.FC<AutocompleteSupplierProps> = ({ onSelect, value }) => {
+const AutocompleteSupplier: React.FC<AutocompleteSupplierProps> = ({ onSelect, value, isForLocation }) => {
   const [query, setQuery] = useState<string>(value ? value.name : '');
   const [Suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [filteredSuppliers, setFilteredSuppliers] = useState<Supplier[]>([]);
@@ -18,14 +19,17 @@ const AutocompleteSupplier: React.FC<AutocompleteSupplierProps> = ({ onSelect, v
   useEffect(() => {
     const fetchSuppliers = async () => {
       try {
+        let mode = 'Supplier'
+        if(isForLocation)
+          mode = 'Location'
         const response = await supplierApis.getAllSuppliers();
         if (!response.data.status)
           toast.error(response.data.err ?? "Something went wrong while fetching list of suppliers")
         else {
           const data = response.data.data
           console.log(data)
-          setSuppliers(data.map((item:Supplier)=>{return {...item, supplier_id:item._id}}).filter((item: any) => item.category !== "Location"))
-          setFilteredSuppliers(data.map((item:Supplier)=>{return {...item, supplier_id:item._id}}).filter((item: any) => item.category !== "Location"));
+          setSuppliers(data.map((item:Supplier)=>{return {...item, supplier_id:item._id}}).filter((item: any) => item.category === mode))
+          setFilteredSuppliers(data.map((item:Supplier)=>{return {...item, supplier_id:item._id}}).filter((item: any) => item.category === mode));
         }
       } catch (error) {
         console.error('Error fetching suppliers:', error);

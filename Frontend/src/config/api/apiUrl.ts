@@ -29,6 +29,9 @@ export const apiUrl = {
     updateSupplier: `${base}/updateSupplierById`,
     getAllSupplierOrders: `${base}/supplyOrders`,
 
+    route:`${base}/routes`,
+    updateRoute:`${base}/updateRoutes`,
+    OPRoute:`${base}/OProutes`
 
 
 }

@@ -22,14 +22,15 @@ const ViewOrder: React.FC = () => {
     fetchOrders();
   }, []);
 
+  // console.log(filteredOrders)
 
   useEffect(() => {
     const filtered = orders.filter((order) => {
-      const orderDate = new Date(order.order.createdAt);
+      const orderDate = new Date(order.createdAt);
       const isWithinDateRange = (!filterDate.start || !filterDate.end) ||
         (orderDate >= new Date(filterDate.start) && orderDate <= new Date(filterDate.end));
-      const matchesSearch = order.customer.email.toLowerCase().includes(search.toLowerCase());
-      const matchesStatus = !statusFilter || order.order.status === statusFilter;
+      const matchesSearch = order.customer?.email.toLowerCase().includes(search.toLowerCase());
+      const matchesStatus = !statusFilter || order.status === statusFilter;
 
       return isWithinDateRange && matchesSearch && matchesStatus;
     });
@@ -47,7 +48,7 @@ const ViewOrder: React.FC = () => {
         setOrders(response.data.data);
         setFilteredOrders(response.data.data);
         // toast.info("Users fetched successfully");
-
+        // console.log(response.data.data)
       } else {
         toast.error(response.data.err)
       }
@@ -140,17 +141,17 @@ const ViewOrder: React.FC = () => {
           </Table.Head>
           <Table.Body>
             {filteredOrders.map((order) => (
-              <Table.Row key={order.order._id} className="hover:bg-gray-100">
-                <Table.Cell className="px-4 py-2 border-b border-gray-200">{new Date(order.order.createdAt).toISOString().split('T')[0]}</Table.Cell>
-                <Table.Cell className="px-4 py-2 border-b border-gray-200">{order.customer.email}</Table.Cell>
-                <Table.Cell className="px-4 py-2 border-b border-gray-200">{order.order._id}</Table.Cell>
-                <Table.Cell className="px-4 py-2 border-b border-gray-200">{order.order.amount_total?.toFixed(2)}</Table.Cell>
-                <Table.Cell className="px-4 py-2 border-b border-gray-200">{order.order.due_amount?.toFixed(2)}</Table.Cell>
-                <Table.Cell className="px-4 py-2 border-b border-gray-200">{order.order.ship_method}</Table.Cell>
-                <Table.Cell className="px-4 py-2 border-b border-gray-200">{order.order.status}</Table.Cell>
+              <Table.Row key={order._id} className="hover:bg-gray-100">
+                <Table.Cell className="px-4 py-2 border-b border-gray-200">{new Date(order.createdAt).toISOString().split('T')[0]}</Table.Cell>
+                <Table.Cell className="px-4 py-2 border-b border-gray-200">{order.customer?.email}</Table.Cell>
+                <Table.Cell className="px-4 py-2 border-b border-gray-200">{order._id}</Table.Cell>
+                <Table.Cell className="px-4 py-2 border-b border-gray-200">{order.amount_total?.toFixed(2)}</Table.Cell>
+                <Table.Cell className="px-4 py-2 border-b border-gray-200">{order.due_amount?.toFixed(2)}</Table.Cell>
+                <Table.Cell className="px-4 py-2 border-b border-gray-200">{order.ship_method}</Table.Cell>
+                <Table.Cell className="px-4 py-2 border-b border-gray-200">{order.status}</Table.Cell>
                 <Table.Cell className="px-4 py-2 border-b border-gray-200 ">
                   <MdRemoveRedEye className='inline mr-2 cursor-pointer' title='View Order' />
-                  <MdEdit className='inline mx-2 cursor-pointer' title='Edit Order' onClick={() => handleEditOrder(order.order._id)} />
+                  <MdEdit className='inline mx-2 cursor-pointer' title='Edit Order' onClick={() => handleEditOrder(order._id)} />
                 </Table.Cell>
               </Table.Row>
             ))}

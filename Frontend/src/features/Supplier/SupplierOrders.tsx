@@ -4,17 +4,7 @@ import { toast } from 'react-toastify';
 import Loading from '../../util/Loading';
 import { Table } from 'flowbite-react';
 import { MdArrowDropDown, MdArrowDropUp } from 'react-icons/md';
-
-interface Supplier {
-    _id: string;
-    supplier_id: string;
-    name: string;
-    phoneNumber1: string;
-    phoneNumber2: string;
-    emailID: string;
-    pickupLocation: string;
-    pickupGoogleMapLink: string;
-}
+import { Supplier } from '../../config/models/supplier';
 
 interface Child {
     SKU: string;
@@ -161,18 +151,18 @@ const SupplierOrdersTable = () => {
                                 let lastProductName = '';
                                 return <Table.Row key={index} className="hover:bg-gray-100">
                                     <Table.Cell className="py-2 px-4 border-b">{new Date(supplierOrder.createdAt).toLocaleDateString()}</Table.Cell>
-                                    <Table.Cell className="py-2 px-4 border-b">{supplierOrder.supplier.name}</Table.Cell>
-                                    <Table.Cell className="py-2 px-4 border-b">{supplierOrder.supplier.pickupLocation}</Table.Cell>
-                                    <Table.Cell className="py-2 px-4 border-b">{supplierOrder.supplier.emailID}</Table.Cell>
+                                    <Table.Cell className="py-2 px-4 border-b">{supplierOrder.supplier?.name}</Table.Cell>
+                                    <Table.Cell className="py-2 px-4 border-b">{supplierOrder.supplier?.pickupLocation.address}</Table.Cell>
+                                    <Table.Cell className="py-2 px-4 border-b">{supplierOrder.supplier?.emailID}</Table.Cell>
                                     <Table.Cell className="py-2 px-4 border-b">
-                                        {supplierOrder.supplier.phoneNumber1}
-                                        {supplierOrder.supplier.phoneNumber2 && <br />}
-                                        {supplierOrder.supplier.phoneNumber2}
+                                        {supplierOrder.supplier?.phoneNumber1}
+                                        {supplierOrder.supplier?.phoneNumber2 && <br />}
+                                        {supplierOrder.supplier?.phoneNumber2}
                                     </Table.Cell>
                                     <Table.Cell className="py-2 px-4 border-b">{supplierOrder.poID}</Table.Cell>
                                     <Table.Cell className="py-2 px-4 border-b">
                                         <ul>
-                                            {supplierOrder.order.products.filter((product: Product) => product.supplier.supplier_id === supplierOrder.supplier._id).map((product: Product, pIndex: number) => {
+                                            {supplierOrder.order.products.filter((product: Product) => product.supplier?.supplier_id === supplierOrder.supplier?._id).map((product: Product, pIndex: number) => {
                                                 let flag = lastProductName !== product.name
                                                 lastProductName = product.name
                                                 return <li key={pIndex}>

@@ -30,7 +30,7 @@ const AutocompleteProductInput: React.FC<{ value: string,setInputValue:(any), on
             const data: Product[] = response.data.data
             console.log(data)
             setProducts(data);
-            setFilteredProducts(data.flatMap(product => product.children.map(child => ({ ...child, parentName: product.name, parent_id:product._id }))));
+            setFilteredProducts(data.flatMap(product => product.children.filter(child=>child.status==="in stock").map(child => ({ ...child, parentName: product.name, parent_id:product._id }))));
         } catch (error:any) {
             toast.error(error.response?.data.err.toString()??error.message.toString());
             console.log(error)

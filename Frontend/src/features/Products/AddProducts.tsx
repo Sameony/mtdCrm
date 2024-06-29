@@ -284,7 +284,7 @@ const ProductForm: React.FC = () => {
 
             <div className="mb-4">
                 <label htmlFor="supplier" className="block text-sm font-medium text-gray-700 mb-2"><span className='text-red-500'>*</span>Supplier:</label>
-                <AutocompleteSupplier onSelect={handleSupplierSelect} value={formState.supplier || null} />
+                <AutocompleteSupplier onSelect={handleSupplierSelect} value={formState.supplier || undefined} />
             </div>
 
             <hr className='my-6' />
@@ -528,7 +528,7 @@ const ProductForm: React.FC = () => {
                                 <Table.Cell>{child.selling_price}</Table.Cell>
                                 <Table.Cell>{child.sale_price}</Table.Cell>
                                 <Table.Cell>{child.cost_price}</Table.Cell>
-                                <Table.Cell>{child.image ? <img src={`${child.image.path ? apiUrl.base + "/" + child.image.path : child.imageUrl}`} alt="Uploaded" /> : <MdImageNotSupported className='h-7 w-7' />}</Table.Cell>
+                                <Table.Cell>{child.image ? <img className='w-20 ' src={`${child.image.path ? apiUrl.base + "/" + child.image.path : child.imageUrl}`} alt="Uploaded" /> : <MdImageNotSupported className='h-7 w-7' />}</Table.Cell>
                                 <Table.Cell className='flex items-stretch justify-between'>
                                     <Button
                                         color={'success'}
